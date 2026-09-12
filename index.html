@@ -1,0 +1,2790 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="UV Energize 2027 — working demo of an attendee app and year-round community site for PDS Equipment.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="UV Energize">
+<style>*{box-sizing:border-box}html,body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>UV Energize 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#F6F5F4;
+  --surface:#FFFFFF;
+  --surface-2:#EBE8E6;
+  --ink:#121212;
+  --ink-2:#3A3937;
+  --muted:#6E6A66;
+  --rule:#DDD9D5;
+  --rule-soft:#EAE7E4;
+  --uv:#C8102E;
+  --uv-soft:#FBE7EA;
+  --amber:#9A6206;
+  --amber-soft:#F8EFDC;
+  --cyan:#3F3F3F;
+  --magenta:#C8102E;
+  --yellow:#8C8681;
+  --ok:#177245;
+  --shadow:0 1px 2px rgba(18,18,18,.06), 0 10px 30px -18px rgba(18,18,18,.4);
+  --f-ui:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D0D0D;
+    --surface:#171717;
+    --surface-2:#212121;
+    --ink:#F2F0EE;
+    --ink-2:#CFCBC7;
+    --muted:#8F8A85;
+    --rule:#2D2D2D;
+    --rule-soft:#222222;
+    --uv:#FF5C63;
+    --uv-soft:#2B1114;
+    --amber:#E0A64B;
+    --amber-soft:#2B2110;
+    --cyan:#B8B3AE;
+    --magenta:#FF5C63;
+    --yellow:#8C8681;
+    --ok:#4FBF85;
+    --shadow:0 1px 2px rgba(0,0,0,.6), 0 12px 32px -20px rgba(0,0,0,1);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D0D0D;
+  --surface:#171717;
+  --surface-2:#212121;
+  --ink:#F2F0EE;
+  --ink-2:#CFCBC7;
+  --muted:#8F8A85;
+  --rule:#2D2D2D;
+  --rule-soft:#222222;
+  --uv:#FF5C63;
+  --uv-soft:#2B1114;
+  --amber:#E0A64B;
+  --amber-soft:#2B2110;
+  --cyan:#B8B3AE;
+  --magenta:#FF5C63;
+  --yellow:#8C8681;
+  --ok:#4FBF85;
+  --shadow:0 1px 2px rgba(0,0,0,.6), 0 12px 32px -20px rgba(0,0,0,1);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+p{margin:0}
+button{font-family:inherit;cursor:pointer}
+a{color:var(--uv)}
+:focus-visible{outline:2px solid var(--uv);outline-offset:2px;border-radius:4px}
+
+.wrap{max-width:64rem;margin:0 auto;padding-inline:20px;padding-block:0 60px}
+
+/* demo banner */
+.demobar{
+  background:var(--uv);color:#fff;
+  font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  padding:9px 20px;text-align:center;line-height:1.4;
+}
+.demobar b{font-weight:600}
+.demobar{display:flex;flex-wrap:wrap;gap:9px 20px;align-items:center;justify-content:center}
+.db-text{text-align:left}
+.db-switch{display:flex;align-items:center;gap:9px}
+.db-switch > span{opacity:.85}
+.demobar .roleswitch{border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.14)}
+.demobar .roleswitch button{color:rgba(255,255,255,.85);padding:6px 13px;font-size:.78rem;text-transform:none;letter-spacing:0}
+.demobar .roleswitch button[aria-pressed="true"]{background:#fff;color:var(--uv)}
+.stafftag{
+  display:inline-block;font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;background:var(--ink);color:var(--ground);padding:4px 9px;border-radius:4px;margin-bottom:10px;
+}
+
+/* masthead */
+.top{padding-block:28px 20px;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.brandrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brandcard{background:var(--uv);border-radius:12px;padding:12px 17px;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.brand{font-size:clamp(1.35rem,4.4vw,1.9rem);font-weight:700;letter-spacing:-.035em;color:#fff;line-height:1.05}
+.brandsub{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-top:6px}
+.pdslogo{
+  display:inline-flex;align-self:flex-start;background:#fff;border-radius:7px;
+  padding:8px 11px;box-shadow:0 0 0 1px var(--rule);
+}
+.pdslogo img{display:block;width:106px;height:auto}
+@media (max-width:700px){ .pdslogo img{width:84px} .brandcard{padding:11px 14px} .brandrow{gap:11px} }
+.channels{display:flex;gap:4px;align-items:center}
+.chip{width:24px;height:7px;border:1px solid var(--rule)}
+.chip.c{background:var(--cyan);border-color:transparent}
+.chip.m{background:var(--magenta);border-color:transparent}
+.chip.y{background:var(--yellow);border-color:transparent}
+.chip.k{background:var(--ink);border-color:transparent}
+.chip.w{background:var(--surface)}
+
+/* role switch */
+.roleswitch{display:flex;gap:0;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--surface)}
+.roleswitch button{
+  border:0;background:transparent;color:var(--muted);
+  font-size:.83rem;font-weight:600;padding:9px 18px;letter-spacing:-.005em;
+}
+.roleswitch button[aria-pressed="true"]{background:var(--uv);color:#fff}
+
+.topright{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.installbtn{
+  border:1px solid var(--uv);background:var(--uv-soft);color:var(--uv);
+  border-radius:999px;padding:9px 17px;font-size:.83rem;font-weight:600;white-space:nowrap;
+}
+.installbtn[aria-expanded="true"]{background:var(--uv);color:#fff;border-color:var(--uv)}
+
+/* mobile app shell */
+.bottomnav{display:none}
+.morelist{display:flex;flex-direction:column;gap:10px}
+.morerow{
+  background:var(--surface);border:1px solid var(--rule);border-radius:12px;
+  padding:16px 17px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;color:var(--ink);
+}
+.morerow b{display:block;font-size:1rem;font-weight:600}
+.morerow span{display:block;font-size:.84rem;color:var(--muted);margin-top:2px}
+.morerow .chev{margin-left:auto;color:var(--muted)}
+
+@media (max-width:700px){
+  nav.tabs{display:none}
+  .bottomnav{
+    display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:var(--surface);border-top:1px solid var(--rule);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));
+  }
+  .bottomnav button{
+    border:0;background:transparent;color:var(--muted);
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    padding:8px 2px;font-size:10px;font-weight:600;min-height:54px;
+  }
+  .bottomnav button svg{width:22px;height:22px}
+  .bottomnav button[aria-selected="true"]{color:var(--uv)}
+  .wrap{padding-bottom:96px}
+  .top{padding-block:20px 14px;gap:14px}
+  .topright{flex-direction:row;align-items:center;width:100%;justify-content:space-between;gap:10px}
+  .installbtn{padding:11px 14px;font-size:.8rem}
+  .btn{padding:14px 18px;font-size:.95rem}
+  .btn.sm{padding:11px 14px;font-size:.86rem}
+  .star{width:46px;height:46px;font-size:18px}
+  .sesscard{grid-template-columns:1fr 96px}
+  .sc-art svg{width:42px;height:42px}
+  .sc-main{padding:16px}
+  .qrwrap{display:flex}
+  .install{grid-template-columns:1fr}
+  .daytabs button{padding:11px 18px;font-size:.9rem}
+  .hero{padding:24px 20px}
+}
+
+/* nav */
+nav.tabs{display:grid;gap:9px;margin:18px 0 26px}
+nav.tabs button{
+  border:1px solid var(--rule);background:var(--surface);border-radius:12px;
+  padding:15px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--ink);font-size:.81rem;font-weight:600;line-height:1.25;text-align:center;
+}
+nav.tabs button svg{width:24px;height:24px;color:var(--uv)}
+nav.tabs button:hover{border-color:var(--uv)}
+nav.tabs button[aria-selected="true"]{border-color:var(--uv);background:var(--uv-soft)}
+
+section.view{padding-block:4px}
+.eyebrow{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:18px}
+.lede{color:var(--ink-2);font-size:1.05rem;max-width:36rem}
+
+/* hero */
+.hero{
+  background:var(--surface);border:1px solid var(--rule);box-shadow:var(--shadow);
+  border-radius:14px;padding:30px 28px;display:flex;flex-direction:column;gap:16px;margin-bottom:26px;
+}
+.hero h2{font-size:clamp(1.6rem,4.2vw,2.3rem);font-weight:700}
+.hero .when{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--uv);font-weight:600}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.btn{border:0;border-radius:8px;padding:11px 18px;font-weight:600;font-size:.9rem;background:var(--uv);color:#fff}
+.btn.ghost{background:transparent;border:1px solid var(--rule);color:var(--ink)}
+.btn.sm{padding:7px 12px;font-size:.8rem;border-radius:6px}
+.btn[disabled]{opacity:.55;cursor:default}
+
+/* install block */
+.install{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);
+  padding:24px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-bottom:26px;
+}
+.qrcard{background:#fff;border-radius:10px;padding:12px;width:168px;display:grid;place-items:center;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.qrcard svg{width:100%;height:auto;display:block;color:#000}
+.qrwrap{display:flex;flex-direction:column;gap:9px;align-items:center}
+.qrwrap p{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center}
+.install-how h3{font-size:1.15rem;font-weight:700;margin-bottom:7px}
+.install-how > p{font-size:.93rem;color:var(--ink-2);max-width:34rem}
+.howcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:16px}
+.howcol{background:var(--surface-2);border-radius:9px;padding:13px 14px}
+.howcol b{display:block;font-size:.84rem;font-weight:700;margin-bottom:6px}
+.howcol span{display:block;font-size:.85rem;color:var(--ink-2);line-height:1.5}
+.install .foot{font-size:.84rem;color:var(--muted);margin-top:14px}
+@media (max-width:640px){
+  .install{grid-template-columns:1fr;gap:20px}
+  .qrwrap{display:none}
+}
+
+/* now / next */
+.nowbox{background:var(--surface);border:1px solid var(--rule);border-radius:13px;overflow:hidden;margin-bottom:14px;box-shadow:var(--shadow)}
+.now-head{
+  display:flex;align-items:center;gap:9px;padding:12px 16px;background:var(--ink);color:var(--ground);
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+}
+.now-head.next{background:var(--surface-2);color:var(--muted);border-top:1px solid var(--rule)}
+.livedot{width:8px;height:8px;border-radius:50%;background:var(--uv);box-shadow:0 0 0 3px rgba(200,16,46,.3)}
+@media (prefers-reduced-motion:no-preference){ .livedot{animation:pulse 2s ease-in-out infinite} }
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(200,16,46,.3)}50%{box-shadow:0 0 0 6px rgba(200,16,46,.08)}}
+.mini{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:0 16px 0 0;border-top:1px solid var(--rule-soft)}
+.nowbox .now-head + .mini{border-top:0}
+.mini .sc-art{height:100%;min-height:72px}
+.mini .sc-art svg{width:30px;height:30px}
+.mini-b{padding:12px 0}
+.mini-b h4{font-size:.95rem;font-weight:600}
+.mini-m{font-size:.8rem;color:var(--muted);margin-top:3px}
+
+/* your day */
+.yourday{
+  display:flex;gap:22px;align-items:center;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 18px;
+}
+.yourday > div{display:flex;align-items:baseline;gap:7px}
+.yourday b{font-family:var(--f-mono);font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.yourday span{font-size:.8rem;color:var(--muted)}
+.yourday .btn{margin-left:auto}
+
+/* quick tiles */
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px}
+.qtile{
+  background:var(--surface);border:1px solid var(--rule);border-radius:12px;
+  padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--ink);font-size:.83rem;font-weight:600;
+}
+.qtile svg{width:26px;height:26px;color:var(--uv)}
+.qtile:hover{border-color:var(--uv)}
+
+/* announcements */
+.anns{display:flex;flex-direction:column;gap:9px}
+.ann{background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:14px 16px;display:flex;gap:13px;align-items:flex-start}
+.ann-tag{
+  font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  background:var(--uv-soft);color:var(--uv);padding:4px 8px;border-radius:4px;white-space:nowrap;margin-top:1px;
+}
+.ann b{display:block;font-size:.94rem;font-weight:600}
+.ann p{font-size:.85rem;color:var(--ink-2);margin-top:4px}
+
+/* expandable feature cards */
+.fcards{display:flex;flex-direction:column;gap:8px}
+.fcard{background:var(--surface);border:1px solid var(--rule);border-radius:11px;overflow:hidden}
+.fcard.open{border-color:var(--uv)}
+.fcard-h{
+  width:100%;background:transparent;border:0;padding:15px 16px;display:flex;gap:14px;
+  align-items:center;justify-content:space-between;text-align:left;color:var(--ink);
+}
+.fcard-h b{display:block;font-size:.98rem;font-weight:600}
+.fcard-h em{display:block;font-style:normal;font-size:.85rem;color:var(--muted);margin-top:3px}
+.fcard-h i{font-style:normal;font-family:var(--f-mono);font-size:19px;color:var(--uv);line-height:1}
+.fcard-b{padding:0 16px 16px;font-size:.89rem;color:var(--ink-2);max-width:44rem}
+
+.gridcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px}
+.card h4{font-size:.98rem;font-weight:600}
+.card p{font-size:.88rem;color:var(--ink-2)}
+
+/* schedule */
+.daytabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.daytabs button{
+  border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);
+  border-radius:999px;padding:8px 16px;font-size:.85rem;font-weight:600;
+}
+.daytabs button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+
+.sess{
+  background:var(--surface);border:1px solid var(--rule);border-radius:11px;
+  padding:15px 16px;display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:start;margin-bottom:9px;
+}
+.sess .t{font-family:var(--f-mono);font-size:.82rem;font-weight:600;color:var(--uv);font-variant-numeric:tabular-nums;padding-top:2px}
+.sess h4{font-size:.97rem;font-weight:600;margin-bottom:3px}
+.sess .meta{font-size:.82rem;color:var(--muted)}
+.sess .acts{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.star{border:1px solid var(--rule);background:transparent;border-radius:7px;width:34px;height:34px;font-size:15px;color:var(--muted);display:grid;place-items:center}
+.star[aria-pressed="true"]{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+.badge{
+  font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  padding:3px 7px;border-radius:4px;white-space:nowrap;
+}
+.badge.in{background:var(--uv-soft);color:var(--uv)}
+.badge.clash{background:var(--amber-soft);color:var(--amber)}
+.badge.done{background:var(--surface-2);color:var(--muted)}
+.sess.picked{border-color:var(--uv)}
+
+/* time-slot grouping */
+.slot{margin-bottom:16px}
+.slottime{
+  font-family:var(--f-mono);font-size:.86rem;font-weight:600;color:var(--uv);
+  margin-bottom:8px;display:flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums;
+}
+.slottime i{flex:1;height:1px;background:var(--rule);font-style:normal}
+.slottime span{
+  font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);
+  background:var(--amber-soft);padding:3px 8px;border-radius:4px;font-weight:600;font-family:var(--f-ui);
+}
+.slotcards{display:grid;grid-template-columns:1fr;gap:10px}
+.slot.multi .slotcards{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.sesscard{
+  background:var(--surface);border:1px solid var(--rule);border-radius:12px;
+  display:grid;grid-template-columns:1fr 112px;overflow:hidden;
+}
+.sesscard.picked{border-color:var(--uv);box-shadow:inset 4px 0 0 var(--uv)}
+.sc-main{padding:15px 16px;display:flex;flex-direction:column;gap:14px;justify-content:space-between;min-height:132px}
+.sc-art{position:relative;display:grid;place-items:center;overflow:hidden}
+.sc-art svg{width:50px;height:50px;position:relative;z-index:1}
+.sc-art.ink{background:var(--ink);color:var(--ground)}
+.sc-art.ink::before{
+  content:"";position:absolute;inset:0;opacity:.16;
+  background-image:linear-gradient(var(--ground) 1px,transparent 1px),linear-gradient(90deg,var(--ground) 1px,transparent 1px);
+  background-size:13px 13px;
+}
+.sc-art.red{background:var(--uv);color:#fff}
+.sc-art.red::before{
+  content:"";position:absolute;inset:0;
+  background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.17) 0 2px,transparent 2px 10px);
+}
+.sc-art.warm{background:var(--surface-2);color:var(--ink-2)}
+.sc-art.warm::before{
+  content:"";position:absolute;inset:0;opacity:.26;
+  background-image:radial-gradient(currentColor 1.1px,transparent 1.2px);background-size:12px 12px;
+}
+.sic{width:34px;height:34px;border-radius:8px;background:var(--uv-soft);color:var(--uv);display:grid;place-items:center;flex:0 0 34px}
+.sic svg{width:19px;height:19px}
+.sesscard h4{font-size:.98rem;font-weight:600}
+.sesscard .meta{font-size:.82rem;color:var(--ink-2)}
+.sesscard .room{font-family:var(--f-mono);font-size:.73rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.sc-acts{display:flex;gap:8px;align-items:center}
+
+.empty{padding:30px 18px;text-align:center;color:var(--muted);font-size:.9rem;border:1px dashed var(--rule);border-radius:11px}
+
+/* vote */
+.entries{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}
+.entry{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:9px}
+.entry .no{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;color:var(--muted)}
+.entry h4{font-size:1rem;font-weight:600}
+.entry .maker{font-size:.82rem;color:var(--muted)}
+.entry .tech{font-size:.8rem;color:var(--ink-2)}
+.entry.voted{border-color:var(--uv);background:var(--uv-soft)}
+.swatch{height:6px;border-radius:3px;margin-bottom:2px}
+
+/* bars */
+.bars{display:flex;flex-direction:column;gap:11px}
+.barrow{display:grid;grid-template-columns:1fr 46px;gap:12px;align-items:center}
+.barlabel{font-size:.86rem;display:flex;flex-direction:column;gap:5px}
+.barlabel span{color:var(--muted);font-size:.78rem}
+.track{height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.fill{height:100%;background:var(--uv);border-radius:5px;transition:width .5s ease}
+.fill.lead{background:var(--amber)}
+.barnum{font-family:var(--f-mono);font-size:.85rem;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:22px}
+.stat{background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:15px 16px}
+.stat .k{font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px}
+.stat .v{font-size:1.6rem;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:.85rem;font-weight:500;color:var(--muted);letter-spacing:0}
+
+/* list rows */
+.rows{background:var(--surface);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:13px 16px;border-bottom:1px solid var(--rule-soft);align-items:center}
+.row:last-child{border-bottom:0}
+.row .who{font-size:.92rem;font-weight:600}
+.row .sub{font-size:.8rem;color:var(--muted)}
+.row .when{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);white-space:nowrap}
+.row.fresh{background:var(--uv-soft)}
+
+/* questions */
+.q{background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;margin-bottom:9px}
+.qvote{border:1px solid var(--rule);background:transparent;border-radius:8px;padding:6px 9px;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:44px;color:var(--ink-2)}
+.qvote[aria-pressed="true"]{background:var(--uv-soft);border-color:var(--uv);color:var(--uv)}
+.qvote b{font-family:var(--f-mono);font-size:.85rem;font-variant-numeric:tabular-nums}
+.qvote span{font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.q .qt{font-size:.92rem}
+.q .qm{font-size:.78rem;color:var(--muted);margin-top:4px}
+
+/* question board */
+.composer{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px;margin-bottom:18px;box-shadow:var(--shadow)}
+.composer textarea{
+  width:100%;font-family:var(--f-ui);font-size:.95rem;padding:11px 12px;border:1px solid var(--rule);
+  border-radius:8px;background:var(--ground);color:var(--ink);resize:vertical;min-height:58px;
+}
+.comp-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:11px}
+.comp-dest{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted)}
+.comp-dest select{font-family:var(--f-ui);font-size:.85rem;padding:7px 9px;border:1px solid var(--rule);border-radius:7px;background:var(--ground);color:var(--ink);max-width:210px}
+.comp-anon{display:flex;align-items:center;gap:7px;font-size:.85rem;color:var(--ink-2);cursor:pointer}
+.comp-anon input{width:17px;height:17px;accent-color:var(--uv)}
+#qpost{margin-left:auto}
+
+.filterbar{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sels{display:flex;gap:10px;flex-wrap:wrap}
+.selwrap{display:flex;align-items:center;gap:7px;font-size:.78rem;color:var(--muted)}
+.selwrap select{
+  font-family:var(--f-ui);font-size:.84rem;padding:7px 9px;border:1px solid var(--rule);
+  border-radius:7px;background:var(--surface);color:var(--ink);max-width:230px;
+}
+.chip-f b{font-family:var(--f-mono);font-weight:600;opacity:.6;margin-left:3px}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip-f{
+  border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);
+  border-radius:999px;padding:7px 15px;font-size:.83rem;font-weight:600;
+}
+.chip-f[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+
+.qcard{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:15px 16px;margin-bottom:11px}
+.q-top{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.qdest{
+  display:inline-block;font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;background:var(--uv-soft);color:var(--uv);padding:3px 8px;border-radius:4px;margin-bottom:7px;
+}
+.answers{margin:13px 0 0 58px;display:flex;flex-direction:column;gap:10px}
+.ans{border-left:2px solid var(--rule);padding-left:13px}
+.ans-by{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ans-by b{font-size:.87rem;font-weight:600}
+.ans-by span{font-size:.76rem;color:var(--muted)}
+.ans p{font-size:.89rem;color:var(--ink-2);margin-top:4px}
+.answerbtn{margin-top:13px;margin-left:58px}
+@media (max-width:560px){ .answers,.answerbtn{margin-left:0} }
+
+/* archive */
+.arch{background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:14px 16px;margin-bottom:9px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.arch h4{font-size:.93rem;font-weight:600}
+.arch .m{font-size:.8rem;color:var(--muted)}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:4px;background:var(--surface-2);color:var(--ink-2)}
+
+.note{font-size:.85rem;color:var(--muted);max-width:36rem}
+.sep{height:1px;background:var(--rule-soft);margin:26px 0}
+
+/* photo wall */
+.uploader{
+  background:var(--surface);border:1px dashed var(--uv);border-radius:12px;padding:16px 18px;
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px;
+}
+.uploader b{display:block;font-size:.96rem;font-weight:600}
+.uploader span{display:block;font-size:.83rem;color:var(--muted);margin-top:3px}
+.uploader .btn{margin-left:auto;cursor:pointer}
+.photogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:12px}
+.photo{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.ph-ph{width:100%;aspect-ratio:4/3;position:relative}
+.ph-ph::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.35) 1px,transparent 1.2px);background-size:14px 14px;opacity:.4}
+.ph-ph.k1{background:linear-gradient(135deg,var(--ink),#454545)}
+.ph-ph.k2{background:linear-gradient(135deg,var(--uv),#7d0a1c)}
+.ph-ph.k3{background:linear-gradient(135deg,#3f3f3f,var(--ink))}
+.ph-ph.k4{background:linear-gradient(135deg,#8c8681,#55504b)}
+.ph-ph.k5{background:linear-gradient(135deg,#7d0a1c,var(--ink))}
+.ph-ph.k6{background:linear-gradient(135deg,#5a5550,#2c2a28)}
+.photo figcaption{padding:11px 13px}
+.photo figcaption b{display:block;font-size:.86rem;font-weight:600;line-height:1.35}
+.photo figcaption span{display:block;font-size:.76rem;color:var(--muted);margin-top:4px}
+
+/* books */
+.books{display:flex;flex-direction:column;gap:11px}
+.book{background:var(--surface);border:1px solid var(--rule);border-radius:11px;display:grid;grid-template-columns:6px 1fr auto;overflow:hidden;align-items:stretch}
+.bk-spine{background:var(--uv)}
+.bk-body{padding:15px 16px}
+.bk-body h4{font-size:1rem;font-weight:600}
+.bk-a{font-size:.84rem;color:var(--muted);margin-top:2px}
+.bk-why{font-size:.88rem;color:var(--ink-2);margin-top:9px;max-width:38rem}
+.bk-meta{font-size:.79rem;color:var(--muted);margin-top:10px}
+.bk-acts{padding:15px 16px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;justify-content:center;border-left:1px solid var(--rule-soft);min-width:158px}
+.bk-count{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* sponsors */
+.sponsors{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:11px}
+.sponsor{background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:15px 16px}
+.sponsor b{display:block;font-size:.98rem;font-weight:600}
+.sponsor span{display:block;font-size:.82rem;color:var(--muted);margin-top:4px}
+.sponsors.lead .sponsor{border-color:var(--uv);background:var(--uv-soft)}
+.sponsors.lead .sponsor b{font-size:1.2rem;color:var(--uv)}
+
+/* vendors */
+.vendors{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:12px}
+.vendor{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.v-head{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.vendor h4{font-size:1rem;font-weight:600}
+.v-what{font-size:.84rem;color:var(--ink-2);margin-top:4px}
+.booth{font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;background:var(--surface-2);color:var(--ink-2);padding:5px 9px;border-radius:5px;white-space:nowrap}
+.v-offer{background:var(--uv-soft);border-radius:9px;padding:12px 13px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.v-offer b{display:block;font-size:.88rem;color:var(--uv);font-weight:600}
+.v-offer span{display:block;font-size:.76rem;color:var(--muted);margin-top:3px}
+.codechip{font-family:var(--f-mono);font-size:.82rem;font-weight:600;letter-spacing:.06em;background:var(--surface);border:1px dashed var(--uv);color:var(--uv);border-radius:6px;padding:8px 12px}
+.codechip.copied{background:var(--uv);color:#fff;border-style:solid}
+.btn.switch{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}
+.v-acts{display:flex;gap:8px;margin-top:auto}
+
+@media (max-width:620px){
+  .book{grid-template-columns:6px 1fr}
+  .bk-acts{grid-column:2;border-left:0;border-top:1px solid var(--rule-soft);flex-direction:row;align-items:center;justify-content:space-between;padding-top:13px}
+}
+
+@media (max-width:560px){
+  .sess{grid-template-columns:52px 1fr;}
+  .sess .acts{grid-column:1/-1;flex-direction:row;justify-content:flex-start;align-items:center}
+  .top{padding-block:26px 18px}
+}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+
+/* ---- printer finder ---- */
+.protobar{background:var(--amber-soft);border:1px solid var(--amber);border-radius:11px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:20px}
+.protobar .sic{background:transparent;color:var(--amber);flex:0 0 22px;width:22px;height:22px;margin-top:1px}
+.protobar .sic svg{width:20px;height:20px}
+.protobar b{display:block;font-size:.92rem;font-weight:700;color:var(--amber)}
+.protobar p{font-size:.85rem;color:var(--ink-2);margin-top:4px;max-width:48rem}
+.wsteps{display:flex;gap:5px;margin:0 0 20px}
+.wstep{height:4px;flex:1;border-radius:2px;background:var(--rule)}
+.wstep.done{background:var(--uv);opacity:.4}
+.wstep.on{background:var(--uv)}
+.wq{font-size:clamp(1.2rem,3.4vw,1.55rem);font-weight:700;margin:2px 0 6px}
+.whelp{font-size:.9rem;color:var(--muted);max-width:40rem;margin-bottom:16px}
+.wopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:11px}
+.wopt{text-align:left;background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:15px 16px;color:var(--ink);display:flex;flex-direction:column;gap:5px}
+.wopt:hover{border-color:var(--uv)}
+.wopt[aria-pressed="true"]{border-color:var(--uv);background:var(--uv-soft)}
+.wopt b{font-size:.96rem;font-weight:600}
+.wopt span{font-size:.83rem;color:var(--ink-2);line-height:1.45}
+.wnav{display:flex;gap:10px;margin-top:20px;align-items:center;flex-wrap:wrap}
+.wpicks{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.wpick{font-size:.78rem;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--rule);border-radius:999px;padding:5px 12px}
+.wpick b{font-weight:600;color:var(--ink)}
+
+.mrec{background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow:hidden;margin-bottom:13px}
+.mrec.top{border-color:var(--uv);box-shadow:inset 4px 0 0 var(--uv)}
+.mrec-h{display:flex;gap:13px;align-items:center;padding:16px 18px 12px;flex-wrap:wrap}
+.mrec-h h4{font-size:1.12rem;font-weight:700}
+.mrec-h .cat{font-size:.82rem;color:var(--muted);width:100%;margin-top:-4px}
+.mrank{font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:4px;background:var(--uv-soft);color:var(--uv);white-space:nowrap}
+.mrank.alt{background:var(--surface-2);color:var(--muted)}
+.mspecs{display:flex;gap:7px;flex-wrap:wrap;padding:0 18px 15px}
+.mspec{font-family:var(--f-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;background:var(--surface-2);color:var(--ink-2);padding:5px 9px;border-radius:5px}
+.mspec em{font-style:normal;color:var(--muted)}
+.vflag{font-style:normal;color:var(--amber);font-weight:700;margin-left:4px}
+.mwhy{padding:0 18px 17px;display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:18px}
+.mwhy h5{font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.mwhy ul{margin:0;padding-left:17px;font-size:.87rem;color:var(--ink-2);display:flex;flex-direction:column;gap:5px}
+.mfoot{border-top:1px solid var(--rule-soft);padding:13px 18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:var(--surface-2)}
+.mfoot .note{margin:0;font-size:.82rem}
+.nomatch{padding:26px 18px;border:1px dashed var(--amber);border-radius:12px;background:var(--amber-soft);margin-bottom:14px}
+.nomatch b{display:block;font-size:1rem;font-weight:700;margin-bottom:6px}
+.nomatch p{font-size:.89rem;color:var(--ink-2);max-width:40rem}
+
+.mtwrap{border:1px solid var(--rule);border-radius:12px;overflow:auto;background:var(--surface);max-height:none}
+table.mt{border-collapse:collapse;width:100%;min-width:790px;font-size:.85rem}
+table.mt th,table.mt td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+table.mt th{font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+table.mt tr:last-child td{border-bottom:0}
+table.mt td b{font-weight:600;display:block}
+table.mt td small{color:var(--muted);font-size:.78rem}
+
+.psearch{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:4px 13px;margin-bottom:14px}
+.psearch svg{width:18px;height:18px;color:var(--muted);flex:0 0 18px}
+.psearch input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-family:var(--f-ui);font-size:.93rem;padding:11px 0;outline:none}
+.psearch input::placeholder{color:var(--muted)}
+.psearch:focus-within{border-color:var(--uv)}
+.psearch input::-webkit-search-cancel-button{display:none}
+
+
+/* ---- phased navigation ---- */
+nav.tabs.grouped{display:flex;flex-direction:column;gap:18px}
+.navgroup{display:flex;flex-direction:column;gap:9px}
+.navlabel{font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
+.navtiles{display:grid;gap:9px}
+.navtiles button{
+  background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:14px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;font-size:.8rem;font-weight:600;color:var(--ink);text-align:center;
+}
+.navtiles button svg{width:24px;height:24px;color:var(--uv)}
+.navtiles button:hover{border-color:var(--uv)}
+.navtiles button[aria-selected="true"]{border-color:var(--uv);background:var(--uv-soft)}
+.navgroup + .navgroup .navtiles button{background:transparent}
+.navgroup + .navgroup .navtiles button[aria-selected="true"]{background:var(--uv-soft)}
+.phasenote{
+  background:var(--surface-2);border:1px solid var(--rule);border-left:3px solid var(--uv);
+  border-radius:9px;padding:12px 15px;font-size:.86rem;color:var(--ink-2);margin:0 0 20px;
+}
+.phasenote b{color:var(--ink)}
+
+/* ---- around nashville ---- */
+.spot{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;margin-bottom:9px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.spot h4{font-size:.98rem;font-weight:600}
+.spd{font-size:.88rem;color:var(--ink-2);margin-top:5px}
+.spm{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:9px}
+.spw{font-family:var(--f-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.spby{font-size:.78rem;color:var(--muted);margin-left:auto}
+.comp-dest input[type="text"]{
+  font-family:var(--f-ui);font-size:.85rem;padding:7px 9px;border:1px solid var(--rule);
+  border-radius:7px;background:var(--ground);color:var(--ink);max-width:170px;
+}
+
+/* ---- community engine ---- */
+.queuebox{background:var(--uv-soft);border:1px solid var(--uv);border-radius:12px;padding:15px 17px;margin-bottom:18px}
+.queuebox.empty-q,.queuebox.clear-q{background:var(--surface-2);border-color:var(--rule)}
+.queuebox > b{display:block;font-size:.98rem;font-weight:700;margin-bottom:5px}
+.queuebox > p{font-size:.86rem;color:var(--ink-2);margin-bottom:11px;max-width:44rem}
+.qrow{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--rule);border-radius:9px;padding:11px 13px;margin-bottom:7px;color:var(--ink)}
+.qrow:hover{border-color:var(--uv)}
+.qrow b{display:block;font-size:.9rem;font-weight:600}
+.qrow span span{display:block;font-size:.78rem;color:var(--muted);margin-top:2px}
+.qrow .chev{margin-left:auto;color:var(--muted)}
+.morerow.static{cursor:default;align-items:flex-start}
+.morerow.static:hover{border-color:var(--rule)}
+.rwhen{font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--uv);background:var(--uv-soft);padding:5px 9px;border-radius:4px;white-space:nowrap;flex:0 0 auto}
+.pill.kind{background:var(--amber-soft);color:var(--amber)}
+.anscount{font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-left:8px}
+.v-why{font-size:.83rem;color:var(--muted);margin:8px 0 0;font-style:italic}
+.booth.off{background:var(--surface-2);color:var(--muted)}
+.stafftag.ven{background:var(--amber-soft);color:var(--amber)}
+</style>
+
+<div class="demobar">
+  <div class="db-text">Working demo · Real 2026 agenda and reading list · <b>Entries, attendees, sponsors and offers are invented sample data</b></div>
+  <div class="db-switch">
+    <span>Time of year</span>
+    <div class="roleswitch" role="group" aria-label="Time of year">
+      <button id="p-before" aria-pressed="false">Before</button>
+      <button id="p-during" aria-pressed="true">Show week</button>
+      <button id="p-after" aria-pressed="false">After</button>
+    </div>
+  </div>
+  <div class="db-switch">
+    <span>Demo view</span>
+    <div class="roleswitch" role="group" aria-label="Demo view">
+      <button id="r-att" aria-pressed="true">Attendee</button>
+      <button id="r-org" aria-pressed="false">PDS</button>
+      <button id="r-ven" aria-pressed="false">Sponsor</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brandrow">
+      <div class="pdslogo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABRCAYAAAAw7F/uAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAlqADAAQAAAABAAAAUQAAAABMfnzrAAAUrElEQVR4Ae2dDZBVxZXHz4AIijICwihIGEQC8QtYIbuVaBgCxmBVQCoaKil3QTZZxNKIpca4lYjGD5QyK6wGKqaiaBFS5qNwxKDJZkVJlq1d2CDBj3ENCxSCivIxjCAa9W3/bl6/9OvX9757+955743zuurVve/e/jh9+t+nT58+3VekHuocqHOgzoGuwoEGTejDDz+ce+SRR/TfTr1OmjSpkP+4ceOkublZxo8fX6Cl8DLmzYIFC3LPP/98zNjpokFvY2OjZEF3OkpqO3WhMRcuXJgbvuqXMvGEfp1K8Z7335Pd6qfDpnfaZfd778kr7x6WU/52osyYMUMuueQSGTFiRIE2HTfs2tLSkru//f2w15k97/jwA2l790iQn6Z7o6L/0xdPEzpLUrozIyyf0ebNm4MOtmPHDnnuueeCp/+74T9l6LF9nEUd7ttHBn/qU8E76Kez8EvCe2fG6mGh8SoFrDBCeA7oaKiVe1+XMRddKNdee61Mnjy5QGNY2koBK6x86H6mfb+07tubiO6w/JI8X716da61tVX++6mnZNSfczLm+L4y+ri+Mua44+XEnsfEykp3GDpL25HD8n/9+wWdZPbs2d4jSaHRagFYJhc2vnNIlr++S866dKbcd9990r9//wKtZjzuqw0skx7oXrl3j3w0/tyA7jRDvJmveX/gwIHckiVL5KEHfiCTevSSGQMHKyD1NaOkvtcdhXrQwWfOnBnKf1dhPVwPa+EZQ/JDo86Spt8+J5+bMEEQ87VAVzkaoHvp6WPkH3a/LV/9zPlChy2XJsl71cly554xSnqt+Ims/cQn5abTRmQOKuj5fOOAoB43v9UhK/5xXtB5k7RBzQJLM/vyQafKLb1OkOlTL+wy4IJ2APbzMWNl27IHg0ZByug6+Vy3b9+eU/pP7n/uWiyPDT1dZgwY7JNN4jRDju0tdww/o9BRAHacTGoeWFQCMf8vg4YG4ILBcSpWK3GQKFO3v4auKL7gQlJ8bsJE+ebhDwIJFVd3ypIHegR59vZFMmfOnLJt0CWABYMA120DTpErrrgiS35VJC+ky6UH3vECF6BCWtOxaNxqBgCN9DrwxNqy4OoywIKhMLbxjy8JNrdqMtinbA0upQTHTo6E06DKWjmPTYQjogZXlP7YpYBFHW86rVluu+02R3Vr/xHgOu3FV2Ir9IDwhsaTO0U5T8stwPXY4ntD9d4uByzE8dhDRwT7TVrmVCM9OtePFt0t5XTFdevW5Xps/mMwO0tD519sg4eUfbD4lyZPnfZ2Ba7rrrtO/y26xrOgFSUp/tO6f68yDL5V/DDkHzOMob17y2Q1lU0j2i8ffKpgFEwb2pS1v+PDD8tmk7Vuc8fwUWV1RaTyzQqEPgEwLVM2wD80fCTnXXC+jB07tiib9vZ2eVQtgb3xXxsDG9iMAYNiG1PNjGhDVBM6gW3ITg0sKrF4zeOxLOQooiw3AIqFylJ8Q79BXgopFfre735n1tHrfvFrO+Ti6xdEptWNsG/XLunz5tvy+ZMGqKm+X0PoggDq8k2bnQ1CHKTZtDPPliHKXJE0LH9jl2xoGigLf/xDaVVGzV2PPy6Pq58raEPrLGVoZWLk04EwzrrWmFMDy0Vw2DPTCg3z0CEuVRLPxyZDI8OYKIt8GB3mcyUZYluUoZlGmvfAA3LBkfdl/inDzKwS3c8/dZgsXbrUmebZZ58NJInzZcTDlW+9LkcumiLPr1jREGeSoHmn2+KbarhMCi7i36uEhB2qpmOx0KlEqDx2TE4NRx/YdJX9P/HEflIpjwZNDDQrnaJh67ZtDYP+aa5c1rbFi3byo0F2/3adU9dCqrPelzSsercjWEZKmo56KZ1V7j0UT6Wx82eN0rbKVw1YEEePmXv11dK6369CdgUr+R9Jd9OyB2Tuqy96g2vGwEHOYQrPBBaRk4aR55wduaYalR/guuzKK1Vb7I2K5nyH3nzw4MGid1UFFpTgarKxo72IqDh/6NEMGdUMyljbMO+uOwJF2YcO1uNc+gl5+VjX9778srd1nzKVRV2eObif20TB1RYV1bFc1NJTJp7QmNh0AOOTs8BFQbpnDI14V2xUi85J9RPq0OvVVzLRFanF1/qcWLDua/0pSe1oizObmnJMAJIE/OnGWQmqDiyLni75V1mgZcmXZyUGFpVFV3RJXvTOpFIrmASpoQxvEJcJIA5zf/L00yXDWpx0eAGbhuuqA4uZ3ReGNcehvShO4HF60klFz6r1BxuOYmzOBwwTTmgsmYTgzdnm6c0LuCYqExBAR5Im9aUyZ+5p+Fl1HYveOtpDUaURcaOtlRDoimq6njSgpGs3Yp2Wej1zcJ/+m/iqXV20L9U5I0fm2Bdgz9wSZ5wgQdWBhfKKkS1pOPRBchNF0jKSxMdXHymaNDDcYXw1g5I08oceH5mPvO41wFb1a5KTVz8p17dMESQrIGOo9Mo0ZqKqAgsvhUPr1nst77yiNjXYywgx69wp0ZAyGzuSSyyIwdhrBhTvT0+b5jX1N/Mx7xki8Wxd03+IjHjiafnxV74mKOpK0uZoB4ykZvy091UBFiIZZ7Fl1ywI/Ht8KvHnM/zW0XzKipMGMLDrxSec2LNniaGUCcGqox3eNrIoOjBzsBj+2JCRMv/VXdL23e/JV84Jdujk8BDNYsjMRHlnhRtFMaoy+t22rS8EIpnh73rl0+4TcPRvmf7FEqXXJ68s0wRbqTy2obGzBmu7GZj608j33L7Iu/OZ+YXdM1zi/s0PvfWZJT+Q62+9PRgy0Rt9d+qkBhbrZfOhOi5D1QaAtAEj3q1qaxI7VT7OARsZkv07ymMT/6fODuh7DJn8ApChlz38KJOkHABTtMS27FdlKEzDILwptvQ73nu/W5qyq5F2hVpQ7j/9YvnOzj9VtHgNMvSyZR8dK298/1/lrKZTAFcsfazLAQs/I/SP7hQA17hr5geL3nSsSgdAxlD567POkzPW/V4+O3pMWS/YLgUsvCDbzz0TJ7nYri6VboTOKo9F7+Vrn5Qbjh4UllwYqqoRGCYB2FsPPhQMkRi4XXR0GWDBSNw6lELrqke3eIZ5Zf2mTYLLztff3Cn4X1ULYOjWUTuPUivvlWhRmId7yqJVK7uNbhXGV724rL0/561cKacf6AiMzEkXwcPKiPsc6SVqbdK1Ja/mJRZ+6YAK3yflFdnthsCwRgZgDI84Hc5RbsjrPztBZu3ZJve8tj3YOBGWLuvngCu3fgMjSdGQWNMSC1G/tncP+emG33cJScWRQaL0j6QBi/2Nzc1JkxXimx3uzvzpMwvXPCl/k+sReE9gEEUB76zAlrxZd9xZ5P7TeaV51oJhDwMoVmc8GtcvWBDbduJZZCbJfL00dOEYRPV9mqsJsifUCgc++lepzStH214MNoLgTZH1kAlov3TscaJmrwXSawJYzPZYwMWTlLOZZs+ZLf+RB5Tp41OgugZv8NLAt8onHG06WUSdTZV1MF1gAD40skPqPrXDadDbBxS9jcG+RazvaQPmiKuMEyFTAyvJvkKbeBg6cNgwaR47ITgR78qWluA0OcDUVQCl64Tri88GCCQ0PJBt23RWnXLVSr/OnEVnpNlyRXfbr/9NJqjNHX8/eIj4ggyphVTUITWwkuwr1IUWrvTSPENNMVp434Vu/n3NGlnV2JSYYo6enDRpmiBNCM3KrQVpkjT0nTCePGIPp+bQizQDZIuUxDms9jsuPX20l04GOJWtLdi8mhpYSRnwcYzPdn8OJxPl95Q0cDzjhYbDogKW3K9cW5KGa5ImMOKb0gwXmrlXXR2c7WVEiXXb75i/wqnmzQ2xalTlSAzbV6kNqD6BGaHpCXuScrf2WbYJZqQ+BFhpWNX4u1mXBRMo61Wiv3VgJWJXaWSO8jl795teugn6FX5l5rDEOQvY7pIGtdMps4NSfL1hTZrrwDK5kfCeYYOjfHCa8wmYVXBHMQPSy8fFmYNSwrbsm/nHuUdqpg11YHlwEGUXv3E8YDmA1zdwSg/OdGbA391n0ygHpXDsEWA38/O5Zx+CzwzXHNbrwErAeVx2ARSnFvf+RWsAKl+LNra7oVMnFw2DkIIizRn3PnoWzoD3KMXbXl5JUMUAmC/+YrXXuVyYj/RE4K9qfJLSP0Zx47pUc5bUrVMuCoygHIOdNnCG/eIH73ee3YCO0/rPtyQ+zQaQI0GXqZOVqVeSPYV0GiYhSGHMDUkDw/qU6V+SrXmv3m4NrGAYi+tS7XFWVVjjIK2wO4XtMmJ4vOWGG+VypdwnlYjER+fbo85nX6ZMIOzEwRff/H6RSdeWLVtk29atQadhH8JEz6Gdr4k8aLiLd2tgmQyu1D0zQfzKfvWbNQyDzmIZTphtrlTOdL5ncOk9hRTQsf9IsLPaVdhn1HLOEOxvHjY4nZ/uKOYSUh1YmjsVut7z2g75xndvLtGt7OLVsNTAJobJyvSQ5lhN8kWKZb3wrOkN6yh15V1zqAJXXIrZGMHumzjFqRme3Nv+dtW8RMvRCKjwlbvx7rtLOkodWOW4l9F7fYyjWhONBSqKZWi5Up2/leZwt4zIL8lGgwoHTNcehDqwSliW/QO2br05dZIkAZWmgkbTJwf6mCB0Plle0anwuQ8DFWXVgZUlx628WJrhnFK2bvmASmcHuPCiZYcOkq9aASmF6/OjQ08WztFySSpNWx1YmhMZXnUD3NmnATcSfMtiD39hZDAsskPnvUtnBGD1OSs0LO9yz5GUAGre4X0yZfFdgXuOOQN0pa8Dy8UVz2dIKIY93QDqVOeGMFuVTxGYIdSxAg1PvfSC/Gny+YXNEz6L1uXKJ0+kIxJ3+ahhAaDYuBElpcw86+YGkxse9+gbHJK2SV1Zipmz6NZgN5FqAI/c4iXR3hDaQe9XyguUDyrgIKg/3YuJIc7newEQX+fY8/7Rv3w6WbnxsDRz3gUXBEbVbytjLYDGETBJKAKWz6o6B5vWQqCBOzvglEfgu8kMD3wcfdykqfJldbTj/S0tXg2Qhma9LqfzwN2YU2uUJ2lw8O+jCnDlQvPYT8rw4cMFj4bLlGfFnepHvko6oRc69wyWy5P3hbGfE94gyCdwConuRT7p06ZhRd8+Bihtnq70uLTQAHh5VrO+Ltrqz+oc6BYcKEisrGurtxvZnyWh16uV94J7Rdbl1vOrMQ7kDzvFSSzRj8VSsyqM85yhVC4f1zlLLhrs/HVZuIU4ygjON3c8z+XjB8nzebrSlzwjHT5Y1EuX7aJTl0lcHc+85o9fLMmfdEYdne913hFXiipJa+TLezOUxFUvvZ6ZfDULKFLezRc+9zBP2TdiHUCPYshMI58mc8n50KizC1Vo3bdX7O2gLOx+q4xLMTOlNvVF1J+prfPQiy5XbrodNnsKe14gshNu8K+iQ1RDH8wMWABE2WxigUrzkA/7kKYzwGWu5jObs4EVb8W/nzo2kc8FjwjsU5gQyn3ZlUmEqzHts9w1Dzr7yvmw1QiRwGL2wy8q6Pcw3f4CFOmUqCw4mcFce+ZJmjjf1ouiIYt3LnOFaQfC7ReLOg2F10FUsOtIXNezqDz0O/hXLkTljaRk6I4y1DLTRfe1g52vKx7p7HjkEwksdpCUW44gU3qxCxw0AEOHWXB+OCmqA72c50UPK/xn7qsvlJSIVMPLVPtD8fFKLNHlTBv2Z4XD+FNSoOOB4l1qNaGc1MqDw1VOUZu44plta5Lfw/zje28zknyU4uhcpARovLODKw87Tmf/Vz2bImBwg5rVBt9TxjddBw2wcsCymW0Pg/T8SgZm5pXuuJESa+fOnXqW5eQDDGIx0mYkkTGaojy6gusdeeD8XysB6zOzqrXqLIM4gd6sTSsM76beaPJHDyfms6j88zPQ0CiUa1vgXZGRWpiA4sR1pU/6LBJYzIT4hQU9/rt6cNRMhHeKwTlTJzPvw8qr5HOAgd44oGfPQrHoWGEBXmhgEUcDJ6/IF5IRT78rPIy4YXITFfJStiQKuq/ZLvBXn4sPuDub35kMhXatNODs5+Z/epodzIax31Xif74R0SsCs8nel14W9CodtILvot3eBaOHdhtExOvsRoVe9GM9sdL0s1MaoLvo13GyukZKrKwK6Qr5mHYv6OX7Nlqn4j/SCn2LrVn0eDvoIU53Dg0oW7+K0+nsvH3/5/XcQnIAHaaeFCJldBMJLJhg90SzXHqEZqD53PWM91qBRIHXDWCmq0RPMssz7027l/mcezwZ8LN6o3cveUodB24OMWZc+GXWC/2I4VQHwJd3kCuaben3rqtromPGs6WSfod+zIxe0VTkXIBqE5ZGp83iGgksQFXO3AAREGoz2zYSsu1bMxml2O45LimQRQXj5hH2HWRcZNjlSx3XrV4deDWEKdTwS+sxlMsZCCZfAF5SC3w5/tt81PXV5QJMu6PrdzpuZ1wz0bFgmB3MCgMy05ZivtPpyMMlseyhRMfPWk/hUyobmgbKS6NHFv0+MXN6YBBVjdFQzh3Xpt+e+ERJf12vrK8YRu2DR7Iuw5VfJsCyj+KhIJiqhz5mgereVX7hGecVuKbC9DZmaIWI6gaJYQ45vEOipA189UKVh/mk8FP1aGDojpM39Yyiw9UB4+SbNg71qvSIEDkUIsoVM4oa1VVJegXxAIEZGPpUL84BGsQvlXNJGnq6bjx6lz1cMFtTtq8cno7oDvnZm1kUdAZgLnpYhT9hdBj6VSKq4Gu5BACHxf+wAOBd6kdY/CyeRwILMPCLE6gcDW4DB8liSxc7P4Cn46AT2MAiTyRgVCBduThR6bN6x3DnogPA2fWKU6bdWV1pbJ674ih3nhKdzxUvq2eZDIUQg/6Bsc5H5KJz6eGOfMoNm3bliU+vNJ9jc9I/l18+5gP9XtunzPS+9wDIFaqhX5l0oGbQ+SsVMgMWBAMKpagzbEUCDPDZCqW5iM2wCEjDGkkzh/cKkIVhVD/nyqKy/rn24LE7Rb93LUCbeSW5D9OzytUlSRm+cflqRaXoKOrlvgS70rEuxfBmi3Iqhk5GGpR79DCABpAApp0XM0ryMIdkFGTysaWUnbb+vxtzQInnTL6a3o1ZWK96nQPdhwP/D7lE1N8Yn9BqAAAAAElFTkSuQmCC" alt="PDS Equipment"></div>
+      <div class="brandcard"><div class="brand">UV Energize</div><div class="brandsub">Nashville · September 7–9, 2027</div></div>
+    </div>
+    <div class="topright">
+      <button class="installbtn" id="installBtn" aria-expanded="false" aria-controls="installPanel">Put it on your smartphone</button>
+    </div>
+  </header>
+
+  <div class="install" id="installPanel" hidden>
+    <div class="qrwrap"><div class="qrcard" id="qrbox"></div><p>Scan with your phone</p></div>
+    <div class="install-how">
+      <h3>Put it on your smartphone</h3>
+      <p>It installs from the link — no app store, no download, nothing to approve. Takes about ten seconds and then it behaves like any other app on the phone.</p>
+      <div class="howcols">
+        <div class="howcol"><b>iPhone</b><span>Tap the Share button, then <strong>Add to Home Screen</strong>, then Add.</span></div>
+        <div class="howcol"><b>Android</b><span>Tap the menu (⋮), then <strong>Add to Home screen</strong> or Install app.</span></div>
+        <div class="howcol"><b>On a computer</b><span>Nothing to install — it is a normal website. Same link, same everything.</span></div>
+      </div>
+      <p class="foot">Most people will use this at a desk at home and on a phone at the show, so it is built for both. At the show the code is on the back of every badge, on the table tents, and on the first slide of every session.</p>
+    </div>
+  </div>
+
+  <nav class="tabs" id="nav" role="tablist"></nav>
+
+  <main id="main"></main>
+
+</div>
+
+<nav class="bottomnav" id="bottomnav" role="tablist" aria-label="Sections"></nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(function(){
+  /* ---------------- data ---------------- */
+  var SESSIONS = [
+    {d:0,t:"12:00",title:"Beyond the Chaos: Fundraisers That Work",who:"Anne Hotchkiss",room:"Gulch 2",ic:"ribbon"},
+    {d:0,t:"1:00",title:"Adobe Illustrator + RasterLink",who:"Michael Gass & Stone Caillier",room:"Gulch 3",ic:"layers"},
+    {d:0,t:"1:00",title:"UV Base Camp",who:"PDS Equipment",room:"Gulch 1",ic:"tent"},
+    {d:0,t:"2:00",title:"RasterLink Job Creator",who:"Lewis Jones & Carissa Terwey, Mimaki USA",room:"Main Theater",ic:"layers"},
+    {d:0,t:"2:00",title:"Variable Data in CorelDRAW",who:"PDS Equipment",room:"Gulch 3",ic:"data"},
+    {d:0,t:"3:00",title:"AI Generated to Print-Ready Files",who:"Justin Varn",room:"Main Theater",ic:"spark"},
+    {d:0,t:"4:00",title:"The Varsity Edge: Collegiate Licensing",who:"Alicia Pate, Pate Ranch",room:"Main Theater",ic:"pennant"},
+    {d:0,t:"5:15",title:"Special Presentation — Mimaki Product Launch",who:"Mimaki USA",room:"Show Floor",ic:"printer"},
+    {d:0,t:"8:00",title:"Kickoff Party",who:"Rooftop on Broadway",room:"Offsite",ic:"glass"},
+
+    {d:1,t:"9:00",title:"Badge Pickup",who:"Registration",room:"Lobby",ic:"badge"},
+    {d:1,t:"9:40",title:"Outlook for UV Print",who:"Steve Weist, PDS Equipment",room:"Main Theater",ic:"chart"},
+    {d:1,t:"10:00",title:"Show Floor Opens",who:"All exhibitors",room:"Exhibit Hall",ic:"booth"},
+    {d:1,t:"12:00",title:"AI in Action Pro Panel",who:"Bryan McGee · Justin Varn · Tina Porter · Dana Midkiff",room:"Main Theater",ic:"spark"},
+    {d:1,t:"2:00",title:"Plant Local, Grow Loyal",who:"Heather Witbro Bennett, Paisley Grace Makery",room:"Main Theater",ic:"plant"},
+    {d:1,t:"4:00",title:"Targeted Business Pro Panel",who:"Lisa Higginbotham · Stormy McGee · Heather Bennett · Trisha Cole",room:"Main Theater",ic:"mic"},
+    {d:1,t:"8:00",title:"VIP Appreciation Night",who:"PDS Equipment",room:"L27 Rooftop",ic:"glass"},
+
+    {d:2,t:"9:00",title:"Hat Patch Production and Workflow",who:"Trevor Bates, PDS Equipment",room:"Gulch 2",ic:"cap"},
+    {d:2,t:"9:00",title:"RasterLink Spot Color Optimization",who:"Jim Raffel · Shelby Sapusek · Michael Gass",room:"Gulch 3",ic:"drop"},
+    {d:2,t:"10:00",title:"Show Floor, Second Pass",who:"All exhibitors",room:"Exhibit Hall",ic:"booth"},
+    {d:2,t:"12:00",title:"Town Hall: Ask the Experts",who:"Trevor Bates · Doug Griggs · Michael Gass · GoGetters",room:"Main Theater",ic:"mic"},
+    {d:2,t:"2:00",title:"Send-Off & Inspiration Station Awards",who:"Steve Weist, PDS Equipment",room:"Main Theater",ic:"trophy"}
+  ];
+
+  var ICONS = {
+    printer:'<rect x="2.5" y="7.5" width="19" height="9.5" rx="2"/><path d="M2.5 12.5h19"/><circle cx="6" cy="15" r=".9" fill="currentColor" stroke="none"/>',
+    layers:'<path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z"/><path d="M3 12.2 12 16.7l9-4.5"/><path d="M3 16.6 12 21l9-4.4"/>',
+    spark:'<path d="M11 3.5 12.6 9l5.4 1.6-5.4 1.7L11 17.8 9.4 12.3 4 10.6 9.4 9 11 3.5Z"/><path d="M18.3 15.3l.55 1.85 1.85.55-1.85.55-.55 1.85-.55-1.85L15.9 17.7l1.85-.55.55-1.85Z"/>',
+    mic:'<rect x="9" y="3" width="6" height="10" rx="3"/><path d="M5.6 11.2a6.4 6.4 0 0 0 12.8 0"/><path d="M12 17.6V21M8.8 21h6.4"/>',
+    cap:'<path d="M4.2 15.2a7.8 7.8 0 0 1 15.6 0"/><path d="M4.2 15.2h13.4c2.4 0 4.4 1 4.4 2.3 0 .5-.5.9-1.2.9H4.2Z"/>',
+    plant:'<path d="M12 21v-7.6"/><path d="M12 13.4C12 9.6 9.3 7.4 5.6 7.4c0 3.6 2.7 6 6.4 6Z"/><path d="M12 13.4c0-3.2 2.3-5.3 5.4-5.3 0 3.1-2.2 5.3-5.4 5.3Z"/>',
+    trophy:'<path d="M8 3.6h8v5.2a4 4 0 0 1-8 0V3.6Z"/><path d="M8 5.2H5.4A2.6 2.6 0 0 0 8 9.9M16 5.2h2.6A2.6 2.6 0 0 1 16 9.9"/><path d="M12 12.9V17M9.4 20.4h5.2"/>',
+    pennant:'<path d="M6 3v18"/><path d="M6 5h12.5l-3.2 3.7L18.5 12.5H6Z"/>',
+    glass:'<path d="M6.2 4h8.6l-3.5 6.6V19"/><path d="M8.4 19h5.4"/><path d="M17.6 5.2l.55 1.75 1.75.55-1.75.55-.55 1.75-.55-1.75L15.3 7.5l1.75-.55.55-1.75Z"/>',
+    booth:'<rect x="3" y="4.2" width="7.4" height="6.2" rx="1.2"/><rect x="13.6" y="4.2" width="7.4" height="6.2" rx="1.2"/><rect x="3" y="13.6" width="7.4" height="6.2" rx="1.2"/><rect x="13.6" y="13.6" width="7.4" height="6.2" rx="1.2"/>',
+    badge:'<rect x="5" y="8.2" width="14" height="11.6" rx="2"/><path d="M9 8.2 12 4l3 4.2"/><path d="M8.6 13h6.8M8.6 16h4"/>',
+    chart:'<path d="M3 20.4h18"/><path d="M6 17.4v-5M11 17.4V8.6M16 17.4V4.6"/><path d="M19.4 8.2 16 4.6l-2.4 2.6"/>',
+    ribbon:'<circle cx="12" cy="9.4" r="6.4"/><path d="M12 12.6s-2.6-1.7-2.6-3.3a1.5 1.5 0 0 1 2.6-.95 1.5 1.5 0 0 1 2.6.95c0 1.6-2.6 3.3-2.6 3.3Z"/><path d="M8.6 15.2 7.2 21l4.8-2.1L16.8 21l-1.4-5.8"/>',
+    tent:'<path d="M12 3.6 21 20.4H3L12 3.6Z"/><path d="M12 3.6v16.8"/><path d="M8.4 20.4 12 13l3.6 7.4"/>',
+    data:'<rect x="3.4" y="4" width="17.2" height="16" rx="2"/><path d="M3.4 9h17.2M9 9v11"/><path d="M12.4 13h5M12.4 16.2h3"/>',
+    drop:'<path d="M8 3.4c3 3.3 4.5 5.6 4.5 7.6a4.5 4.5 0 0 1-9 0c0-2 1.5-4.3 4.5-7.6Z"/><path d="M17.4 11.4c1.8 2 2.7 3.4 2.7 4.6a2.7 2.7 0 0 1-5.4 0c0-1.2.9-2.6 2.7-4.6Z"/>',
+    home:'<path d="M3.4 10.6 12 3.4l8.6 7.2"/><path d="M5.6 9.6V20.4h12.8V9.6"/>',
+    cal:'<rect x="3.4" y="5" width="17.2" height="15.4" rx="2"/><path d="M3.4 9.6h17.2M8 3.4v3.4M16 3.4v3.4"/>',
+    star:'<path d="m12 3.6 2.6 5.5 6 .9-4.3 4.2 1 6L12 17.4l-5.3 2.8 1-6-4.3-4.2 6-.9L12 3.6Z"/>',
+    ballot:'<rect x="3.6" y="9" width="16.8" height="11.4" rx="2"/><path d="M8 9V4.6h8V9"/><path d="m9.6 14.2 1.8 1.8 3.4-3.4"/>',
+    people:'<circle cx="9" cy="8.4" r="3.2"/><path d="M3.4 19.4a5.6 5.6 0 0 1 11.2 0"/><path d="M16.2 6.2a3.1 3.1 0 0 1 0 5.6M17.4 14.6a5.2 5.2 0 0 1 3.2 4.8"/>',
+    box:'<path d="M3.4 7.6 12 3.4l8.6 4.2v8.8L12 20.6 3.4 16.4V7.6Z"/><path d="m3.4 7.6 8.6 4.3 8.6-4.3M12 11.9v8.7"/>',
+    more:'<circle cx="5.4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="18.6" cy="12" r="1.5" fill="currentColor" stroke="none"/>',
+    camera:'<rect x="3" y="7.2" width="18" height="12.6" rx="2.4"/><circle cx="12" cy="13.6" r="3.5"/><path d="M8.7 7.2 10 4.4h4l1.3 2.8"/>',
+    wand:'<path d="M4 20 14.4 9.6"/><path d="M12.9 8.1 15.9 11.1"/><path d="M17.3 3.1l.6 1.9 1.9.6-1.9.6-.6 1.9-.6-1.9-1.9-.6 1.9-.6.6-1.9Z"/><path d="M20.6 12.5l.42 1.33 1.33.42-1.33.42-.42 1.33-.42-1.33-1.33-.42 1.33-.42.42-1.33Z"/>',
+    chat:'<path d="M20.4 14.4a2 2 0 0 1-2 2H8l-4 3.4V6a2 2 0 0 1 2-2h12.4a2 2 0 0 1 2 2v8.4Z"/><path d="M8 9h8.4M8 12.4h5.4"/>',
+    pin:'<path d="M19 10.3c0 5-7 11.1-7 11.1s-7-6.1-7-11.1a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10.1" r="2.6"/>',
+    pulse:'<path d="M3 12.4h4l2.4-6.2 4 12.6 2.6-8 1.6 3.2H21"/>'
+  };
+  function icon(name){
+    var p=ICONS[name]||ICONS.layers;
+    return '<span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg></span>';
+  }
+
+  /* art treatment per topic — machines read dark, people read red, everything else neutral */
+  var ART={
+    printer:"ink", layers:"ink", data:"ink", drop:"ink", wand:"ink", pulse:"ink",
+    pin:"warm",
+    chat:"red",
+    spark:"red", mic:"red", chart:"red", ribbon:"red", plant:"red", pennant:"red",
+    cap:"warm", trophy:"warm", glass:"warm", badge:"warm", booth:"warm", tent:"warm"
+  };
+  function artPanel(name){
+    var p=ICONS[name]||ICONS.layers, cls=ART[name]||"warm";
+    return '<div class="sc-art '+cls+'" aria-hidden="true">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg></div>';
+  }
+  var DAYS = ["Tue · Sept 7","Wed · Sept 8","Thu · Sept 9"];
+
+  var ENTRIES = [
+    {n:"01",title:"Harbor Light",maker:"Dana Whitfield · Coastal Line Studio",tech:"Layered acrylic, raised gloss line work",v:64,c:"var(--cyan)"},
+    {n:"02",title:"Six Strings",maker:"Marcus Reyland · Reyland Signworks",tech:"Textured ink build on gloss black",v:88,c:"var(--magenta)"},
+    {n:"03",title:"Trailhead",maker:"Nora Pell · Northwoods Craft Co.",tech:"Engraved birch + printed topo relief",v:41,c:"var(--ok)"},
+    {n:"04",title:"Watch Standing",maker:"Curtis Bowen · Bowen Awards",tech:"Print on walnut, sub-surface crystal, LED base",v:73,c:"var(--uv)"},
+    {n:"05",title:"Bourbon Row",maker:"Alma Trice · Trice & Daughters",tech:"360° wrap on bottles, no seam",v:57,c:"var(--amber)"},
+    {n:"06",title:"Field Notes",maker:"Ruth Calder · Calder Bindery",tech:"Printed book fore-edges",v:35,c:"var(--yellow)"},
+    {n:"07",title:"Hometown",maker:"Peter Mazur · Mazur Design House",tech:"Contour-cut town plaque, stained-glass style",v:49,c:"var(--cyan)"},
+    {n:"08",title:"Reef",maker:"Sylvie Andrade · Andrade Makery",tech:"Sculpted relief panel + matching pendant",v:91,c:"var(--magenta)"}
+  ];
+
+  var QUESTIONS = [
+    {q:"What's the real idle routine if the machine sits two weeks between jobs?",s:"Town Hall",v:34,anon:true},
+    {q:"How do you price a job when the customer supplies terrible artwork?",s:"General",v:28,anon:true},
+    {q:"Which ink for leatherette vs. drinkware — and when do I actually need primer?",s:"Town Hall",v:25,anon:false,who:"Priya Raman"},
+    {q:"What do first-year owners most often wreck, and how do we avoid it?",s:"Town Hall",v:19,anon:true},
+    {q:"Is anyone doing hat patches for corporate accounts? Would like to compare notes.",s:"General",v:17,anon:false,who:"Gwen Halloran"},
+    {q:"Can Job Creator automate a five-layer textured build?",s:"Hat Patch Production and Workflow",v:12,anon:false,who:"Dale Whitcomb"}
+  ];
+  QUESTIONS[0].answers=[{by:"Trevor Bates",role:"PDS Equipment",t:"Leave the power on and let it run its own refresh cycles. Check ink levels first so nothing's empty or expired, empty the waste tank, and wet the cap tops with F-15 before you go."}];
+  QUESTIONS[2].answers=[
+    {by:"Trevor Bates",role:"PDS Equipment",t:"Flex ink for anything that bends — patches, leatherette. LUS-120. Hard ink is fine on rigid drinkware."},
+    {by:"Carl King",role:"King Pin Design",t:"We primer anything glazed or very smooth. Adds about a minute a piece but saves the reprint."}
+  ];
+  QUESTIONS[4].answers=[{by:"Priya Raman",role:"Two Rivers Engraving",t:"Doing about 400 a month for three construction crews. Happy to talk, find me at the Thursday floor session."}];
+
+  var ROSTER = [
+    ["Marisol Reyes","Anchor Line Signs","1:02"],
+    ["Dale Whitcomb","Whitcomb Awards","1:03"],
+    ["Priya Raman","Two Rivers Engraving","1:04"],
+    ["Curtis Boyle","Boyle Custom Co.","1:06"],
+    ["Gwen Halloran","Halloran Studio","1:07"],
+    ["Tom Ferreira","Ferreira Signworks","1:09"]
+  ];
+
+  var ATTENDEES = [
+    ["Marisol Reyes","Anchor Line Signs","Fundraisers · Collegiate"],
+    ["Dale Whitcomb","Whitcomb Awards","Awards · Sandblasting"],
+    ["Priya Raman","Two Rivers Engraving","Hat patches · Leatherette"],
+    ["Gwen Halloran","Halloran Studio","Drinkware · 360° printing"],
+    ["Tom Ferreira","Ferreira Signworks","Signage · Roll-to-roll"],
+    ["Alma Trice","Trice & Daughters","Spirits brands · Onsite events"]
+  ];
+
+  var ARCHIVE = [
+    {y:"2026",title:"Plant Local, Grow Loyal",who:"Heather Witbro Bennett",tags:["Recording","Transcript","Deck"]},
+    {y:"2026",title:"AI in Action Pro Panel",who:"McGee · Varn · Porter · Midkiff",tags:["Recording","Transcript"]},
+    {y:"2026",title:"Hat Patch Production and Workflow",who:"Trevor Bates",tags:["Recording","Transcript","Deck"]},
+    {y:"2026",title:"Town Hall: Ask the Experts",who:"PDS techs & GoGetters",tags:["Recording","Transcript"]},
+    {y:"2025",title:"UV Base Camp",who:"PDS Equipment",tags:["Recording","Deck"]},
+    {y:"2025",title:"Inspiration Station Winners",who:"Gallery",tags:["Photos"]}
+  ];
+
+  var BOOKS=[
+    {t:"Traction",a:"Gino Wickman",by:"Lisa Higginbotham",at:"Targeted Business Panel · 2026",read:34,
+     why:"The first book that gave her a real system to run the business on, rather than a pile of habits."},
+    {t:"Atomic Habits",a:"James Clear",by:"Heather Witbro Bennett",at:"Targeted Business Panel · 2026",read:48,
+     why:"Tying small habits together — she credits it with more change than any productivity tool."},
+    {t:"Buy Back Your Time",a:"Dan Martell",by:"Lisa Higginbotham",at:"Targeted Business Panel · 2026",read:21,
+     why:"For owners who work all the time and know it isn't sustainable."},
+    {t:"The 80/20 Principle",a:"Richard Koch",by:"Heather Witbro Bennett",at:"Targeted Business Panel · 2026",read:29,
+     why:"Most of your effort goes to things that don't produce. This is how you find out which ones."},
+    {t:"Present, Not Perfect",a:"Shauna Niequist",by:"Heather Witbro Bennett",at:"Targeted Business Panel · 2026",read:12,
+     why:"For the habit of not launching anything until it's perfect."}
+  ];
+
+  var RESOURCES=[
+    {g:"Running your machine",items:[
+      ["Daily maintenance checklist","Test print, wipe down, cap tops — the five minutes that prevent a $3,000 head","PDF"],
+      ["Cleaning fluid guide","What 07 / F-200, F-15 and F-16 are each for, and when not to use them","PDF"],
+      ["Spare parts to keep on the shelf","Wipers, sub-tank, white recirculation pump, mist filters","List"],
+      ["Shutdown routines","Vacation, long idle, and storm prep — three different procedures","PDF"]
+    ]},
+    {g:"Software & files",items:[
+      ["RasterLink downloads and profiles","Current versions, and when your tech says it's safe to update","Link"],
+      ["Job Creator presets","Save a multi-layer build once instead of rebuilding it every time","Guide"],
+      ["Print-and-cut file setup","Registration marks by machine, layer structure, what to turn off before export","Guide"]
+    ]},
+    {g:"Running the business",items:[
+      ["Scribe","Screen-record a process and it writes the SOP for you","Tool"],
+      ["NotebookLM","Drop in manuals and guides, then ask them questions","Tool"],
+      ["Main Street America","Grants and education for small businesses in a Main Street district","Org"],
+      ["Small Business Development Center","Free coaching, real experts, almost nobody uses it","Org"]
+    ]},
+    {g:"Suppliers",items:[
+      ["JDS Industries","Leatherette, blanks, Seklema mats","Supplier"],
+      ["G2 Awards & Laser Supply","Acrylic blanks — crinkle, painted and pearl finishes","Supplier"],
+      ["Heat Transfer Warehouse","Hook-and-loop sheets for patch backing","Supplier"]
+    ]}
+  ];
+
+  var SPONSORS=[
+    {tier:"Presenting",name:"Northgate Inkjet Systems",note:"Flatbed and roll-to-roll systems"},
+    {tier:"Gold",name:"Creekside Materials Co.",note:"Leatherette, acrylics, blanks"},
+    {tier:"Gold",name:"Halstead Ink & Supply",note:"UV inks, primers, maintenance fluids"},
+    {tier:"Silver",name:"Marlow Finishing",note:"Laminates, varnishes, clear coats"},
+    {tier:"Silver",name:"Redbird Fixtures",note:"Jigs, vacuum tables, suction mats"},
+    {tier:"Silver",name:"Cardinal Freight Partners",note:"Freight and machine logistics"}
+  ];
+
+  var VENDORS=[
+    {n:"Creekside Materials Co.",b:"12",w:"Leatherette, acrylic blanks, adhesive-backed sheet stock",
+     offer:"15% off your first sheet order",code:"ENERGIZE15",exp:"Expires Sept 30"},
+    {n:"Halstead Ink & Supply",b:"14",w:"UV inks, primers, cleaning fluids and swabs",
+     offer:"Free lint-free starter kit with any fluid order",code:"CLEANSTART",exp:"Show week only"},
+    {n:"Redbird Fixtures",b:"21",w:"Custom jigs, suction mats, vacuum table covers",
+     offer:"Free jig design consult",code:"",exp:""},
+    {n:"Thistle & Pine Blanks",b:"23",w:"Hardwood, slate and cork blanks in small runs",
+     offer:"Sample box, $10 shipped",code:"SAMPLEBOX",exp:"Expires Oct 15"},
+    {n:"Marlow Finishing",b:"27",w:"Laminates, clear coats, protective varnish",
+     offer:"",code:"",exp:""},
+    {n:"Fold & Fasten",b:"30",w:"Packaging, boxes, ribbon, gift presentation",
+     offer:"Free packaging mockup for show attendees",code:"",exp:""},
+    {n:"Beacon Patch Supply",b:"33",w:"Hook-and-loop backing, patch stock, heat press supplies",
+     offer:"20% off hook-and-loop sheets",code:"PATCH20",exp:"Expires Oct 31"},
+    {n:"Cardinal Freight Partners",b:"36",w:"Machine freight, rigging, install logistics",
+     offer:"",code:"",exp:""}
+  ];
+
+  var PHOTOS=[
+    {cap:"Entry 16 — the turtle panel, up close",by:"Marisol Reyes",tag:"Inspiration Station",k:1},
+    {cap:"Kebab running a tumbler at the Mimaki stand",by:"Dale Whitcomb",tag:"Show floor",k:2},
+    {cap:"Trevor's four-file setup on screen",by:"Priya Raman",tag:"Sessions",k:3},
+    {cap:"Hat patch samples on the table",by:"Gwen Halloran",tag:"Sessions",k:4},
+    {cap:"Broadway from the rooftop",by:"Tom Ferreira",tag:"Social",k:5},
+    {cap:"Whiskey label plaques — gloss on matte",by:"Curtis Boyle",tag:"Inspiration Station",k:6},
+    {cap:"The acrylic finish sample board",by:"Marisol Reyes",tag:"Show floor",k:7},
+    {cap:"Town Hall, standing room only",by:"Alma Trice",tag:"Sessions",k:8}
+  ];
+
+  var ANNOUNCEMENTS=[
+    {t:"Voting closes Thursday at 1:30",b:"Get round the Inspiration Station tables before lunch — winners are announced at 2:00.",tag:"Today"},
+    {t:"Tonight's party is on the roof, not the lobby",b:"The lanyards were printed wrong. L27, from 8:00. Food is out at 8:30.",tag:"Update"},
+    {t:"Thursday 9:00 runs two tracks",b:"Hat Patch in Gulch 2, Spot Color in Gulch 3. Check in to the one you attend — that's what sends you the notes.",tag:"Heads up"}
+  ];
+
+  /* the demo pretends it is Wednesday lunchtime */
+  var NOW={d:1,t:"12:00"};
+
+  /* ---------------- state ---------------- */
+  var S = {
+    role:"att",
+    tab:"home",
+    day:0,
+    starred:{},
+    checked:{},
+    voted:null,
+    qvoted:{},
+    qfilter:"All",
+    qsort:"votes",
+    qdest:"General",
+    qanon:true,
+    qseq:QUESTIONS.length,
+    read:{},
+    card:null,
+    pfilter:"All",
+    photos:PHOTOS.map(function(p){return Object.assign({},p);}),
+    joined:false,
+    roster:ROSTER.map(function(r){return r.slice();}),
+    entries:ENTRIES.map(function(e){return Object.assign({},e);}),
+    questions:QUESTIONS.map(function(q,i){var o=Object.assign({},q);o.id=i;return o;}),
+    phase:"during",
+    cityf:"all", spotv:{}, spots:[], pstream:null,
+    wiz:{}, wmode:"wiz",
+    gear:{}, help:false, gfilter:"", psearch:"", refocus:null,
+    threads:[], cfilter:"all", copen:0, cseq:100
+  };
+
+  /* The site has a life cycle, not just a set of pages. Four tools only make sense
+     while the show is running; the rest are the reason to come back in March.
+     phases: b = before, d = during, a = after. */
+  var TAB_META={
+    home:   {label:"Home",           icon:"home",   group:"year", phases:"bda"},
+    comm:   {label:"Community",      icon:"chat",   group:"year", phases:"bda"},
+    wiz:    {label:"Find a Printer", icon:"wand",   group:"year", phases:"bda"},
+    res:    {label:"Knowledge",      icon:"box",    group:"year", phases:"bda"},
+    people: {label:"People",         icon:"people", group:"year", phases:"bda"},
+    photos: {label:"Photos",         icon:"camera", group:"year", phases:"bda"},
+    vend:   {label:"Vendors",        icon:"booth",  group:"year", phases:"bda"},
+    archive:{label:"Archive",        icon:"layers", group:"year", phases:"bda"},
+    city:   {label:"Nashville",      icon:"pin",    group:"show", phases:"bd"},
+    sched:  {label:"Schedule",       icon:"cal",    group:"show", phases:"bd"},
+    mine:   {label:"My Agenda",      icon:"star",   group:"show", phases:"d"},
+    ask:    {label:"Ask",            icon:"mic",    group:"show", phases:"d"},
+    vote:   {label:"Vote",           icon:"ballot", group:"show", phases:"d"}
+  };
+  var YEAR_ORDER=["home","comm","wiz","res","people","photos","vend","archive"];
+  var SHOW_ORDER=["sched","mine","ask","vote","city"];
+
+  var PHASE={
+    before:{k:"b", show:"Coming up in Nashville", year:"All year round",
+            note:"Six months out. The show tools are still asleep — everything on the page right now is the part that runs the other 362 days."},
+    during:{k:"d", show:"Happening this week", year:"All year round",
+            note:"Show week. The four show tools move to the front and the year-round pages step back."},
+    after: {k:"a", show:"", year:"All year round",
+            note:"Three weeks later. Schedule, agenda, questions and voting have folded themselves into the Archive without anyone tidying up."}
+  };
+
+  function tabsFor(group){
+    var pk=PHASE[S.phase].k;
+    return (group==="show"?SHOW_ORDER:YEAR_ORDER).filter(function(id){
+      return TAB_META[id].phases.indexOf(pk)>-1;
+    });
+  }
+  function tabLive(id){
+    if(!TAB_META[id]) return true; /* organizer views are not phased */
+    return TAB_META[id].phases.indexOf(PHASE[S.phase].k)>-1;
+  }
+
+  var TABS_ORG=[["insights","Insights","pulse"],["dash","Check-in","people"],["results","Voting","ballot"],["queue","Questions","mic"]];
+  var TABS_VEN=[["supply","Demand signal","pulse"]];
+  var BOTTOM_ORG=[["insights","Insights","pulse"],["dash","Check-in","people"],["results","Voting","ballot"],["queue","Questions","mic"]];
+  function bottomAtt(){
+    return S.phase==="during"
+      ? [["home","Home","home"],["sched","Schedule","cal"],["mine","Mine","star"],["vote","Vote","ballot"],["more","More","more"]]
+      : [["home","Home","home"],["comm","Community","chat"],["wiz","Find","wand"],["people","People","people"],["more","More","more"]];
+  }
+
+  var nav=document.getElementById("nav"), main=document.getElementById("main"), bnav=document.getElementById("bottomnav");
+  function esc(s){return String(s).replace(/[<>&"]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c];});}
+  function key(s){return s.d+"|"+s.t+"|"+s.title;}
+  function byKey(k){var f=null;SESSIONS.forEach(function(s){if(key(s)===k)f=s;});return f;}
+  /* one check-in per time slot — attendance is proof, and you can't be in two rooms */
+  function slotTaken(s){
+    var hit=null;
+    SESSIONS.forEach(function(o){
+      if(o!==s && o.d===s.d && o.t===s.t && S.checked[key(o)]) hit=o;
+    });
+    return hit;
+  }
+  function checkBtn(s){
+    var k=key(s);
+    if(S.checked[k]) return '<span class="badge in">Checked in</span>';
+    var other=slotTaken(s);
+    if(other) return '<button class="btn ghost sm switch" data-check="'+esc(k)+'" title="You are checked into '+esc(other.title)+'">Switch to this</button>';
+    return '<button class="btn ghost sm" data-check="'+esc(k)+'">Check in</button>';
+  }
+
+  function tileHtml(id,label,ic){
+    return '<button role="tab" data-tab="'+id+'" aria-selected="'+(S.tab===id)+'">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[ic]||"")+'</svg>'+
+      '<span>'+label+'</span></button>';
+  }
+  function groupHtml(label,ids){
+    if(!ids.length) return "";
+    /* balance the rows so nothing is left stranded on its own */
+    var cols = ids.length<=5 ? ids.length : Math.ceil(ids.length/2);
+    return '<div class="navgroup"><p class="navlabel">'+label+'</p>'+
+      '<div class="navtiles" style="grid-template-columns:repeat('+cols+',minmax(0,1fr))">'+
+      ids.map(function(id){ return tileHtml(id,TAB_META[id].label,TAB_META[id].icon); }).join("")+
+      '</div></div>';
+  }
+
+  function renderNav(){
+    if(S.role!=="att"){
+      var ol = S.role==="ven"?TABS_VEN:TABS_ORG;
+      nav.className="tabs plain";
+      nav.style.gridTemplateColumns="repeat("+ol.length+",minmax(0,1fr))";
+      nav.innerHTML=ol.map(function(t){return tileHtml(t[0],t[1],t[2]);}).join("");
+    } else {
+      nav.className="tabs grouped";
+      nav.style.gridTemplateColumns="";
+      var ph=PHASE[S.phase];
+      var showG=groupHtml(ph.show,tabsFor("show")), yearG=groupHtml(ph.year,tabsFor("year"));
+      nav.innerHTML = (S.phase==="during" ? showG+yearG : yearG+showG);
+    }
+
+    var blist = S.role==="att"?bottomAtt():(S.role==="ven"?TABS_VEN:BOTTOM_ORG);
+    var secondary = {ask:1,people:1,archive:1,res:1,vend:1,wiz:1,comm:1};
+    bnav.innerHTML = blist.map(function(t){
+      var on = S.tab===t[0] || (t[0]==="more" && secondary[S.tab]);
+      return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(!!on)+'">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[t[2]]||"")+'</svg>'+
+        '<span>'+t[1]+'</span></button>';
+    }).join("");
+  }
+
+  /* ---------------- views ---------------- */
+  function vHome(){
+    /* what's on now, and what's after it */
+    var todays=SESSIONS.filter(function(s){return s.d===NOW.d;});
+    var nowList=todays.filter(function(s){return s.t===NOW.t;});
+    var idx=todays.indexOf(nowList[nowList.length-1]);
+    var nextT=null, next=[];
+    for(var i=idx+1;i<todays.length;i++){ if(todays[i].t!==NOW.t){ nextT=todays[i].t; break; } }
+    if(nextT) next=todays.filter(function(s){return s.t===nextT;});
+
+    function miniRow(s){
+      var k=key(s);
+      return '<div class="mini">'+artPanel(s.ic)+
+        '<div class="mini-b"><h4>'+esc(s.title)+'</h4><div class="mini-m">'+esc(s.who)+' · '+esc(s.room)+'</div></div>'+
+        '<div class="mini-a">'+checkBtn(s)+'</div></div>';
+    }
+
+    var starred=SESSIONS.filter(function(s){return S.starred[key(s)];});
+    var checkedCount=Object.keys(S.checked).length;
+
+    var anns=ANNOUNCEMENTS.map(function(a){
+      return '<div class="ann"><span class="ann-tag">'+esc(a.tag)+'</span>'+
+        '<div><b>'+esc(a.t)+'</b><p>'+esc(a.b)+'</p></div></div>';
+    }).join("");
+
+    var CARDS=[
+      ["Build your day","Star the sessions you want and the app becomes your schedule, not the whole grid.",
+       "It flags where you have two things at once so you find out now instead of in the hallway, and your picks sit under My Agenda grouped by day. Starring is just planning — you can star as many as you like."],
+      ["Check in by tapping","No clipboard. The deck for that session emails itself to you the same afternoon.",
+       "One check-in per time slot, because check-in is what proves you were in the room. PDS gets a clean, deduped list per session while the session is still running, instead of retyping handwriting three weeks later."],
+      ["Ask anything","A board for the whole show. Anonymously if you want.",
+       "Questions can be tagged to a session or the Town Hall, and anyone can upvote. Answers are never anonymous, so you always know who told you. Staff can sort by unanswered to see what nobody picked up."],
+      ["Vote on the floor","Inspiration Station voting with a live tally.",
+       "One vote per person, and every voter is already checked in — so it's one person one vote, not a link forwarded round a Facebook group. Results are ready the moment voting closes."],
+      ["Find your people","An opt-in list of who else is here and what they work on.",
+       "Nobody appears unless they choose to. Search by what people do — fundraisers, drinkware, collegiate — instead of hoping you bump into them at the coffee urn."],
+      ["It keeps working","After the show the same icon becomes the archive.",
+       "Recordings, searchable transcripts and every deck, going back years. It's also what somebody finds in March when they're deciding whether to come."]
+    ];
+    var cards=CARDS.map(function(c,i){
+      var open=S.card===i;
+      return '<div class="fcard'+(open?' open':'')+'">'+
+        '<button class="fcard-h" data-card="'+i+'" aria-expanded="'+open+'">'+
+          '<span><b>'+esc(c[0])+'</b><em>'+esc(c[1])+'</em></span><i>'+(open?'−':'+')+'</i></button>'+
+        (open?'<p class="fcard-b">'+esc(c[2])+'</p>':'')+
+      '</div>';
+    }).join("");
+
+    var ph=PHASE[S.phase];
+    var phaseStrip='<div class="phasenote"><b>'+(S.phase==="before"?"Before the show":S.phase==="after"?"After the show":"Show week")+'</b> — '+ph.note+'</div>';
+
+    if(S.phase!=="during"){
+      var latest=S.threads.slice(0,3);
+      return phaseStrip+
+      '<div class="hero">'+
+        '<p class="when">'+(S.phase==="before"?"September 7–9, 2027 · The Westin Nashville":"Nashville 2027 · that\'s a wrap")+'</p>'+
+        '<h2>'+(S.phase==="before"
+          ? "The show is six months out. The community is not."
+          : "Three days done. The part that matters carries on.")+'</h2>'+
+        '<div class="cta">'+
+          '<button class="btn" data-go="comm">Open the community</button>'+
+          '<button class="btn ghost" data-go="'+(S.phase==="before"?"city":"archive")+'">'+(S.phase==="before"?"Plan the trip":"Watch it back")+'</button>'+
+        '</div>'+
+      '</div>'+
+      '<p class="eyebrow" style="margin:22px 0 10px">Latest from the board</p>'+
+      '<div class="rows">'+latest.map(function(t){
+        return '<div class="row"><div><div class="who">'+esc(t.title)+'</div>'+
+          '<div class="sub">'+esc(t.by)+' · '+esc(t.shop)+' · '+esc(t.when)+'</div></div>'+
+          '<button class="btn ghost sm" data-tab="comm">Open</button></div>';
+      }).join("")+'</div>'+
+      '<p class="eyebrow" style="margin:26px 0 10px">What the app does</p>'+
+      '<div class="fcards">'+cards+'</div>'+
+      '<p class="note" style="margin-top:20px">Same site, same link, same icon on the phone. It just knows what time of year it is.</p>';
+    }
+
+    return phaseStrip+
+    '<div class="hero">'+
+      '<p class="when">September 7–9, 2027 · The Westin Nashville</p>'+
+      '<h2>Three days of UV printing, run by people who actually run the machines.</h2>'+
+      '<div class="cta">'+
+        '<button class="btn" data-go="sched">See the schedule</button>'+
+        '<button class="btn ghost" data-go="archive">Watch last year</button>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="nowbox">'+
+      '<div class="now-head"><span class="livedot"></span>Happening now · Wednesday '+NOW.t+'</div>'+
+      nowList.map(miniRow).join("")+
+      (next.length?'<div class="now-head next">Up next · '+esc(nextT)+'</div>'+next.map(miniRow).join(""):'')+
+    '</div>'+
+
+    '<div class="yourday">'+
+      '<div><b>'+starred.length+'</b><span>starred</span></div>'+
+      '<div><b>'+checkedCount+'</b><span>checked in</span></div>'+
+      '<div><b>'+S.questions.length+'</b><span>questions asked</span></div>'+
+      '<button class="btn ghost sm" data-go="mine">My agenda</button>'+
+    '</div>'+
+
+    '<p class="eyebrow" style="margin:26px 0 10px">From the organizers</p>'+
+    '<div class="anns">'+anns+'</div>'+
+
+    '<p class="eyebrow" style="margin:26px 0 10px">What the app does</p>'+
+    '<div class="fcards">'+cards+'</div>'+
+
+    '<p class="note" style="margin-top:20px">No app store, no download. It installs from a link and updates itself — change the schedule at 7am and every phone has it at 7:01.</p>';
+  }
+
+  function sessRow(s){
+    var k=key(s), starred=!!S.starred[k], inAg=!!S.checked[k];
+    var clash = starred && SESSIONS.some(function(o){
+      return o!==s && o.d===s.d && o.t===s.t && S.starred[key(o)];
+    });
+    return '<div class="sess'+(starred?' picked':'')+'">'+
+      '<div class="t">'+s.t+'</div>'+
+      '<div><h4>'+esc(s.title)+'</h4><div class="meta">'+esc(s.who)+' · '+esc(s.room)+'</div>'+
+        (clash?'<span class="badge clash" style="margin-top:7px;display:inline-block">Clashes with another pick</span>':'')+
+      '</div>'+
+      '<div class="acts">'+
+        '<button class="star" data-star="'+esc(k)+'" aria-pressed="'+starred+'" aria-label="Add to my agenda">'+(starred?'★':'☆')+'</button>'+
+        checkBtn(s)+
+      '</div>'+
+    '</div>';
+  }
+
+  function sessCard(s){
+    var k=key(s), starred=!!S.starred[k], inAg=!!S.checked[k];
+    var clash = starred && SESSIONS.some(function(o){
+      return o!==s && o.d===s.d && o.t===s.t && S.starred[key(o)];
+    });
+    return '<div class="sesscard'+(starred?' picked':'')+'">'+
+      '<div class="sc-main">'+
+        '<div><h4>'+esc(s.title)+'</h4>'+
+          '<div class="meta">'+esc(s.who)+'</div>'+
+          '<div class="room">'+esc(s.room)+'</div>'+
+          (clash?'<span class="badge clash" style="margin-top:9px;display:inline-block">Both starred</span>':'')+
+        '</div>'+
+        '<div class="sc-acts">'+
+          '<button class="star" data-star="'+esc(k)+'" aria-pressed="'+starred+'" aria-label="Add to my agenda">'+(starred?'★':'☆')+'</button>'+
+          checkBtn(s)+
+        '</div>'+
+      '</div>'+
+      artPanel(s.ic)+
+    '</div>';
+  }
+
+  function vSched(){
+    var day = SESSIONS.filter(function(s){return s.d===S.day;});
+    var order=[], byTime={};
+    day.forEach(function(s){
+      if(!byTime[s.t]){ byTime[s.t]=[]; order.push(s.t); }
+      byTime[s.t].push(s);
+    });
+    var slots = order.map(function(t){
+      var list=byTime[t], multi=list.length>1;
+      return '<div class="slot'+(multi?' multi':'')+'">'+
+        '<div class="slottime">'+t+'<i></i></div>'+
+        '<div class="slotcards">'+list.map(sessCard).join("")+'</div>'+
+      '</div>';
+    }).join("");
+
+    return '<p class="eyebrow">Schedule</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 8px">The one true copy</h2>'+
+      '<p class="lede" style="margin-bottom:12px">Anything running at the same time sits side by side, so you can see the choice instead of discovering it in the hallway.</p>'+
+      '<p class="note" style="margin-bottom:18px">You can star as many as you like, but you can only <strong>check into one session per time slot</strong> — check-in is what sends you that session\'s notes and deck, so it has to mean you were in the room.</p>'+
+      '<div class="daytabs">'+DAYS.map(function(d,i){
+        return '<button data-day="'+i+'" aria-pressed="'+(S.day===i)+'">'+d+'</button>';
+      }).join("")+'</div>'+slots;
+  }
+
+  function vMine(){
+    var picks = SESSIONS.filter(function(s){return S.starred[key(s)];});
+    if(!picks.length){
+      return '<p class="eyebrow">My Agenda</p><h2 style="font-size:1.5rem;margin:8px 0 18px">Nothing starred yet</h2>'+
+        '<div class="empty">Go to the Schedule and tap ☆ on the sessions you want. They show up here, grouped by day, with conflicts flagged.</div>';
+    }
+    var out='<p class="eyebrow">My Agenda</p><h2 style="font-size:1.5rem;margin:8px 0 18px">'+picks.length+' session'+(picks.length>1?'s':'')+' picked</h2>';
+    DAYS.forEach(function(d,i){
+      var day=picks.filter(function(s){return s.d===i;});
+      if(!day.length) return;
+      out+='<p class="eyebrow" style="margin:18px 0 9px">'+d+'</p>'+day.map(sessRow).join("");
+    });
+    return out;
+  }
+
+  function vAsk(){
+    var dests=["General","Town Hall"].concat(SESSIONS.filter(function(s){
+      return ["layers","spark","cap","drop","mic","plant","chart","pennant","ribbon","printer","data"].indexOf(s.ic)>-1;
+    }).map(function(s){return s.title;}));
+    var seen={},destOpts=dests.filter(function(d){ if(seen[d])return false; seen[d]=1; return true; })
+      .map(function(d){return '<option'+(S.qdest===d?' selected':'')+'>'+esc(d)+'</option>';}).join("");
+
+    /* how many questions per destination */
+    var counts={};
+    S.questions.forEach(function(q){ counts[q.s]=(counts[q.s]||0)+1; });
+    var sessionDests=Object.keys(counts).filter(function(d){ return d!=="General" && d!=="Town Hall"; }).sort();
+
+    var chips=["All","General","Town Hall"].map(function(f){
+      var c = f==="All" ? S.questions.length : (counts[f]||0);
+      return '<button class="chip-f" data-qf="'+esc(f)+'" aria-pressed="'+(S.qfilter===f)+'">'+f+' <b>'+c+'</b></button>';
+    }).join("");
+
+    var sessSel='<label class="selwrap"><span>By session</span><select id="qsess">'+
+      '<option value="">Any session…</option>'+
+      sessionDests.map(function(d){
+        return '<option value="'+esc(d)+'"'+(S.qfilter===d?' selected':'')+'>'+esc(d)+' ('+counts[d]+')</option>';
+      }).join("")+'</select></label>';
+
+    var sortSel='<label class="selwrap"><span>Sort</span><select id="qsort">'+
+      [["votes","Most wanted"],["new","Newest"],["unans","Unanswered first"]].map(function(o){
+        return '<option value="'+o[0]+'"'+(S.qsort===o[0]?' selected':'')+'>'+o[1]+'</option>';
+      }).join("")+'</select></label>';
+
+    var list=S.questions.filter(function(q){
+      if(S.qfilter==="All") return true;
+      return q.s===S.qfilter;
+    }).sort(function(a,b){
+      if(S.qsort==="new") return b.id-a.id;
+      if(S.qsort==="unans"){
+        var an=(a.answers&&a.answers.length)?1:0, bn=(b.answers&&b.answers.length)?1:0;
+        if(an!==bn) return an-bn;
+      }
+      return b.v-a.v;
+    });
+
+    var qs = list.length ? list.map(function(q){
+      var on=!!S.qvoted[q.q];
+      var answers=(q.answers||[]).map(function(a){
+        return '<div class="ans"><div class="ans-by"><b>'+esc(a.by)+'</b><span>'+esc(a.role)+'</span></div>'+
+          '<p>'+esc(a.t)+'</p></div>';
+      }).join("");
+      return '<div class="qcard">'+
+        '<div class="q-top">'+
+          '<button class="qvote" data-q="'+esc(q.q)+'" aria-pressed="'+on+'"><b>'+q.v+'</b><span>me too</span></button>'+
+          '<div class="q-body">'+
+            '<span class="qdest">'+esc(q.s)+'</span>'+
+            '<div class="qt">'+esc(q.q)+'</div>'+
+            '<div class="qm">'+(q.anon?'Asked anonymously':'Asked by '+esc(q.who||"an attendee"))+'</div>'+
+          '</div>'+
+        '</div>'+
+        (answers?'<div class="answers">'+answers+'</div>':'')+
+        '<button class="btn ghost sm answerbtn">Answer this — your name will show</button>'+
+      '</div>';
+    }).join("") : '<div class="empty" style="border:1px dashed var(--rule);border-radius:11px">Nothing here yet. Be the first to ask.</div>';
+
+    return '<p class="eyebrow">Question board</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">Ask anything. Anonymously if you want.</h2>'+
+      '<p class="lede" style="margin-bottom:18px">One board for the whole show. Questions can be anonymous — <strong>answers never are</strong>, so you always know who told you.</p>'+
+
+      '<div class="composer">'+
+        '<textarea id="qtext" placeholder="What do you want to know?" rows="2"></textarea>'+
+        '<div class="comp-row">'+
+          '<label class="comp-dest"><span>Send to</span><select id="qdest">'+destOpts+'</select></label>'+
+          '<label class="comp-anon"><input type="checkbox" id="qanon"'+(S.qanon?' checked':'')+'><span>Ask anonymously</span></label>'+
+          '<button class="btn sm" id="qpost">Post question</button>'+
+        '</div>'+
+      '</div>'+
+
+      '<div class="filterbar">'+
+        '<div class="chips">'+chips+'</div>'+
+        '<div class="sels">'+sessSel+sortSel+'</div>'+
+      '</div>'+
+      qs;
+  }
+
+  function vVote(){
+    var total=S.entries.reduce(function(a,e){return a+e.v;},0);
+    var cards=S.entries.map(function(e){
+      var on=S.voted===e.n;
+      return '<div class="entry'+(on?' voted':'')+'">'+
+        '<div class="swatch" style="background:'+e.c+'"></div>'+
+        '<div class="no">Entry '+e.n+'</div>'+
+        '<h4>'+esc(e.title)+'</h4>'+
+        '<div class="maker">'+esc(e.maker)+'</div>'+
+        '<div class="tech">'+esc(e.tech)+'</div>'+
+        '<button class="btn '+(on?'':'ghost')+' sm" data-vote="'+e.n+'" style="margin-top:6px">'+(on?'✓ Your vote':'Vote for this')+'</button>'+
+      '</div>';
+    }).join("");
+    return '<p class="eyebrow">Inspiration Station</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">One vote each. Results are live.</h2>'+
+      '<p class="lede" style="margin-bottom:18px">'+(S.voted?'Thanks — you can change it any time before 2:00 Thursday.':'Walk the tables, handle the pieces, then vote. '+total+' votes cast so far.')+'</p>'+
+      '<div class="entries">'+cards+'</div>'+
+      '<p class="note" style="margin-top:18px">Every voter is already checked in, so the count is one person one vote — not a link forwarded to a Facebook group.</p>';
+  }
+
+
+  function vArchive(){
+    var y26=ARCHIVE.filter(function(a){return a.y==="2026";});
+    var y25=ARCHIVE.filter(function(a){return a.y==="2025";});
+    function block(list){
+      return list.map(function(a){
+        return '<div class="arch"><div><h4>'+esc(a.title)+'</h4><div class="m">'+esc(a.who)+'</div></div>'+
+          '<div class="pills">'+a.tags.map(function(t){return '<span class="pill">'+t+'</span>';}).join("")+'</div></div>';
+      }).join("");
+    }
+    return '<p class="eyebrow">Archive</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">It doesn\'t die on Thursday afternoon</h2>'+
+      '<p class="lede" style="margin-bottom:20px">Parallel tracks mean everybody misses something. Recordings and searchable transcripts go up after the show, and stay up.</p>'+
+      '<p class="eyebrow" style="margin-bottom:9px">2026</p>'+block(y26)+
+      '<p class="eyebrow" style="margin:20px 0 9px">2025</p>'+block(y25)+
+      '<p class="note" style="margin-top:18px">This is also what somebody finds in March when they\'re deciding whether to come.</p>';
+  }
+
+  /* ----- organizer ----- */
+  function vDash(){
+    var n=S.roster.length;
+    return '<span class="stafftag">PDS staff only — attendees never see this</span>'+
+      '<p class="eyebrow">Organizer ·Live</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 18px">Illustrator + RasterLink · Gulch 3</h2>'+
+      '<div class="stats">'+
+        '<div class="stat"><span class="k">Checked in</span><span class="v">'+n+'</span></div>'+
+        '<div class="stat"><span class="k">Room capacity</span><span class="v">40</span></div>'+
+        '<div class="stat"><span class="k">Decks queued</span><span class="v">'+n+'</span></div>'+
+        '<div class="stat"><span class="k">New to the show</span><span class="v">2</span></div>'+
+      '</div>'+
+      '<div class="rows">'+S.roster.map(function(r,i){
+        return '<div class="row'+(i===0&&r[0]==="You"?' fresh':'')+'"><div><div class="who">'+esc(r[0])+'</div><div class="sub">'+esc(r[1])+'</div></div><div class="when">'+esc(r[2])+'</div></div>';
+      }).join("")+'</div>'+
+      '<p class="note" style="margin-top:16px">Clean, deduped, per session, while the session is still running. Switch to Attendee and check in — you\'ll appear at the top.</p>';
+  }
+
+  function vResults(){
+    var sorted=S.entries.slice().sort(function(a,b){return b.v-a.v;});
+    var total=sorted.reduce(function(a,e){return a+e.v;},0);
+    var max=sorted[0].v;
+    var lead=sorted[0], second=sorted[1];
+    return '<span class="stafftag">PDS staff only — attendees never see this</span>'+
+      '<p class="eyebrow">Organizer ·Inspiration Station</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 18px">Live tally</h2>'+
+      '<div class="stats">'+
+        '<div class="stat"><span class="k">Votes cast</span><span class="v">'+total+'</span></div>'+
+        '<div class="stat"><span class="k">Of those checked in</span><span class="v">78<small>%</small></span></div>'+
+        '<div class="stat"><span class="k">Margin, 1st to 2nd</span><span class="v">'+(lead.v-second.v)+'</span></div>'+
+        '<div class="stat"><span class="k">Entries</span><span class="v">'+sorted.length+'</span></div>'+
+      '</div>'+
+      '<div class="bars">'+sorted.map(function(e,i){
+        return '<div class="barrow"><div class="barlabel"><div><b>'+esc(e.title)+'</b> <span>· '+esc(e.maker.split(" · ")[0])+'</span></div>'+
+          '<div class="track"><div class="fill'+(i===0?' lead':'')+'" style="width:'+Math.round(e.v/max*100)+'%"></div></div></div>'+
+          '<div class="barnum">'+e.v+'</div></div>';
+      }).join("")+'</div>'+
+      '<p class="note" style="margin-top:18px">Winner ready to announce the moment voting closes. Nobody counting slips, and a one-vote margin is a number you can stand behind.</p>';
+  }
+
+  function vQueue(){
+    var qs=S.questions.slice().sort(function(a,b){return b.v-a.v;});
+    return '<span class="stafftag">PDS staff only — attendees never see this</span>'+
+      '<p class="eyebrow">Organizer ·Moderator view</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">Town Hall, ranked by demand</h2>'+
+      '<p class="lede" style="margin-bottom:18px">Submitted ahead of time and upvoted by the room. Work top down and the hour goes where the most people needed it.</p>'+
+      qs.map(function(q,i){
+        return '<div class="q"><button class="qvote" disabled><b>'+q.v+'</b><span>want</span></button>'+
+          '<div><div class="qt">'+esc(q.q)+'</div><div class="qm">'+esc(q.s)+'</div></div></div>';
+      }).join("")+
+      '<p class="note" style="margin-top:16px">Beats waiting for someone brave enough to raise a hand and find a mic.</p>';
+  }
+
+  function vRes(){
+    var books=BOOKS.map(function(b,i){
+      var mine=!!S.read[b.t];
+      return '<div class="book">'+
+        '<div class="bk-spine" aria-hidden="true"></div>'+
+        '<div class="bk-body">'+
+          '<h4>'+esc(b.t)+'</h4><div class="bk-a">'+esc(b.a)+'</div>'+
+          '<p class="bk-why">'+esc(b.why)+'</p>'+
+          '<div class="bk-meta">Recommended by <b>'+esc(b.by)+'</b> · '+esc(b.at)+'</div>'+
+        '</div>'+
+        '<div class="bk-acts">'+
+          '<button class="btn '+(mine?'':'ghost')+' sm" data-read="'+esc(b.t)+'">'+(mine?'✓ Read it':'I\'ve read this')+'</button>'+
+          '<span class="bk-count">'+(b.read+(mine?1:0))+' have read it</span>'+
+        '</div>'+
+      '</div>';
+    }).join("");
+
+    var groups=RESOURCES.map(function(g){
+      return '<p class="eyebrow" style="margin:22px 0 9px">'+esc(g.g)+'</p>'+
+        '<div class="rows">'+g.items.map(function(it){
+          return '<div class="row"><div><div class="who">'+esc(it[0])+'</div><div class="sub">'+esc(it[1])+'</div></div>'+
+            '<span class="pill">'+esc(it[2])+'</span></div>';
+        }).join("")+'</div>';
+    }).join("");
+
+    return '<p class="eyebrow">Knowledge Center</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">The stuff you\'ll want six months from now</h2>'+
+      '<p class="lede" style="margin-bottom:22px">Everything that came up at the show, in one place, still here in March when you actually need it.</p>'+
+      '<p class="eyebrow" style="margin-bottom:10px">The reading list</p>'+
+      '<p class="note" style="margin-bottom:14px">Steve runs on audiobooks, and every year the panels name a few more. This is the running list, who recommended it, and where.</p>'+
+      '<div class="books">'+books+'</div>'+
+      trainingBlock()+
+      groups;
+  }
+
+
+
+  function vMore(){
+    var rows=[
+      ["ask","Question board","Ask anonymously, upvote, see who answered","mic"],
+      ["photos","Photo wall","Everyone's shots from the floor and the sessions","camera"],
+      ["wiz","Find a Printer","Six questions, and an honest answer about which machine fits","wand"],
+      ["comm","Community","The year-round board — ask the room when the show is over","chat"],
+      ["city","Around Nashville","Coffee, food, music and what to skip — written by attendees","pin"],
+      ["res","Knowledge Center","Guides, tools and the reading list","box"],
+      ["vend","Sponsors & Vendors","Booths, offers and discount codes","booth"],
+      ["people","People","Who else is here and what they work on","people"],
+      ["archive","Archive","Recordings, transcripts and decks","layers"]
+    ];
+    return '<p class="eyebrow">More</p><h2 style="font-size:1.5rem;margin:8px 0 18px">Everything else</h2>'+
+      '<div class="morelist">'+rows.map(function(r){
+        return '<button class="morerow" data-tab="'+r[0]+'">'+icon(r[3])+
+          '<span><b>'+r[1]+'</b><span>'+r[2]+'</span></span>'+
+          '<span class="chev">›</span></button>';
+      }).join("")+'</div>';
+  }
+
+
+  /* ============ PRINTER FINDER — PROTOTYPE DATA ============
+     Specs below were pulled from Mimaki's own published pages so the demo has
+     something real to chew on. Every number still needs a PDS rep's eye before
+     this goes anywhere near a customer. Fields marked vq[] render an amber flag
+     in the UI so nothing unverified passes itself off as checked. */
+
+  var MACHINES=[
+    {id:"ujf3042", name:"UJF-3042 MkII e", cat:"Benchtop direct-to-object",
+     form:"object", bedW:11.8, bedH:16.5, maxH:6.02, maxWt:11, foot:"bench", tier:1,
+     flex:true, cut:false, cam:false, kebab:true, conv:false,
+     inks:"LH-100 rigid · LUS-120 / LUS-150 flexible · PR-200 primer",
+     speed:"Up to ~342 pieces/hr in 4-color",
+     uses:["Pens and small promo","ADA / braille plates","Phone cases, badges, flash drives","Short-run personalization"],
+     note:"The starting point for most shops. Small bed, but everything the bigger benchtops do."},
+
+    {id:"ujf2003042", name:"UJF200-3042", cat:"Benchtop direct-to-object · current generation",
+     form:"object", bedW:11.8, bedH:16.5, maxH:9.8, maxWt:44, foot:"bench", tier:2,
+     flex:true, cut:false, cam:true, kebab:true, conv:false,
+     inks:"ELH-100 rigid · ELS-120 flexible · EFS-150 fluorescent · PR-200 primer",
+     speed:"Up to ~70% faster than the previous generation",
+     uses:["Everything the 3042 MkII e does","Taller items without a bigger bed","Camera-assisted placement"],
+     vq:["bedW","bedH"],
+     note:"Same footprint class as the 3042 MkII e with the newer ink family and camera. Bed size needs confirming — Mimaki publishes the UJF200 models on one shared page."},
+
+    {id:"ujf6042", name:"UJF-6042 MkII e", cat:"Benchtop direct-to-object",
+     form:"object", bedW:23.6, bedH:16.5, maxH:6.02, maxWt:17.1, foot:"bench", tier:2,
+     flex:true, cut:false, cam:false, kebab:true, conv:false,
+     inks:"LH-100 rigid · LUS-120 / LUS-150 flexible · PR-200 primer",
+     speed:"Up to ~468 pieces/hr in 4-color",
+     uses:["Drinkware and bottles (with Kebab)","Awards and plaques","Hat patches and leatherette","Wider jigs — more parts per pass"],
+     note:"Twice the bed of the 3042 for the same object height. The jig maths is where it pays for itself."},
+
+    {id:"ujf2006042", name:"UJF200-6042", cat:"Benchtop direct-to-object · current generation",
+     form:"object", bedW:24, bedH:16.5, maxH:9.8, maxWt:44, foot:"bench", tier:3,
+     flex:true, cut:false, cam:true, kebab:true, conv:true,
+     inks:"ELH-100 rigid · ELS-120 flexible · EFS-150 fluorescent · PR-200 primer",
+     speed:"Up to ~11.3 full tables/hr · 1,800 dpi",
+     uses:["Tall objects up to ~9.8\"","Heavier fixtures and jigs (44 lb)","Repeat production with camera registration","Conveyor feed for volume runs"],
+     note:"Replaces the 6042 MkII e. The jumps that matter: object height, bed weight, camera registration, and the conveyor option."},
+
+    {id:"ujf7151", name:"UJF-7151 plusII e", cat:"Benchtop direct-to-object · large",
+     form:"object", bedW:28, bedH:20, maxH:6.02, maxWt:66, foot:"bench", tier:4,
+     flex:true, cut:false, cam:false, kebab:true, conv:false,
+     inks:"LH-100 / ELH-100 rigid · LUS-120 / ELS-120 / LUS-350 flexible · MUH-100-Si metallic silver · PR-200 primer",
+     speed:"Up to ~1,122 pieces/hr in 4-color",
+     uses:["High-volume object printing","Metallic silver ink work","Heavy fixtures up to 66 lb","Industrial panels and dials"],
+     note:"The production benchtop. Fastest of the UJF family and the only one here with metallic silver, but object height is still 6\"."},
+
+    {id:"jfx2001213", name:"JFX200-1213 EX", cat:"Flatbed · medium format",
+     form:"flatbed", bedW:50, bedH:51.2, thick:1.97, foot:"floor", tier:3,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"LH-100 rigid · LUS-120 / LUS-150 / LUS-350 flexible · PR-200 primer",
+     speed:"Not published on the model page",
+     uses:["POP and POS displays","ADA / braille signage","Canvas and art panels","2.5D texture work"],
+     note:"Roughly a 4x4 ft bed. The entry point once sheet goods stop fitting on a benchtop."},
+
+    {id:"jfx2202515", name:"JFX220-2515", cat:"Flatbed · wide format",
+     form:"flatbed", bedW:98.4, bedH:59.1, thick:4, foot:"floor", tier:4,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"ELH-100 rigid · ELS-120 flexible · EFS-150 fluorescent · PR-200 primer",
+     speed:"Not published on the model page",
+     uses:["Wayfinding and directional signage","Full sheet goods","Packaging and display","Specialty textures and finishes"],
+     note:"Takes material up to 4\" thick — the deepest bed clearance of the flatbeds here."},
+
+    {id:"jfx6002513", name:"JFX600-2513", cat:"Flatbed · high-speed production",
+     form:"flatbed", bedW:98.4, bedH:51.2, thick:2.36, foot:"floor", tier:5,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"LH-100 rigid · LUS-120 / LUS-150 / LUS-211 flexible · PR-200 primer",
+     speed:"Up to 200 m²/hr",
+     uses:["Full-shift sign production","Backlit signage","Building materials","Large POS runs"],
+     note:"A production floor machine, not a shop machine. Speed is the whole argument."},
+
+    {id:"ujv100", name:"UJV100-160Plus", cat:"Roll-to-roll UV",
+     form:"roll", rollW:63.4, thick:0.04, foot:"floor", tier:2,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"LUS-170 · CMYK + white + clear",
+     speed:"Not published on the model page",
+     uses:["Banners and canvas","Vehicle wraps","Window and floor graphics","Wallpaper and multi-layer backlit"],
+     note:"The value roll UV. Prints, but does not cut."},
+
+    {id:"ujv200", name:"UJV200 Series (130 / 160)", cat:"Roll-to-roll UV",
+     form:"roll", rollW:63.4, rollWAlt:53.5, thick:0.08, foot:"floor", tier:3,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"ELS-170 · CMYK, optional dual white or dual clear",
+     speed:"Not published on the model page",
+     uses:["Storefront window displays","Vertical banners and wall art","Floor signs — good abrasion resistance"],
+     note:"Two widths, 53.5\" and 63.4\". Newer ink family than the UJV100."},
+
+    {id:"ucjv330", name:"UCJV330 Series (130 / 160)", cat:"Roll UV print-and-cut",
+     form:"roll", rollW:63.4, rollWAlt:53.5, thick:0.04, foot:"floor", tier:3,
+     flex:true, cut:true, cam:false, kebab:false, conv:false,
+     inks:"LUS-170 / LUS-175 / LUS-200 · CMYK + Lc/Lm + white + clear",
+     speed:"Not published on the model page",
+     uses:["Stickers, labels and decals","Contour-cut graphics","Backlit and double-sided prints","Vehicle and floor graphics"],
+     note:"The only machine on this list that prints and cuts in one pass. If you are currently printing then moving sheets to a plotter, this is the one to look at."},
+
+    {id:"ujv55320", name:"UJV55-320", cat:"Roll UV · superwide",
+     form:"roll", rollW:126, thick:0.04, foot:"floor", tier:5,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"LUS-120 · seven colors including white",
+     speed:"Up to 1,184 sq ft/hr in 4-color",
+     uses:["Billboard and building wraps","Full-width banners","Dual-roll production"],
+     note:"126\" wide. A different category of business, not a bigger version of the same one."},
+
+    {id:"uj330h", name:"UJ330H-160", cat:"Hybrid · roll and rigid",
+     form:"hybrid", rollW:64, bedW:60, thick:2, foot:"floor", tier:4,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"ELS-170 · CMYK, optional white and clear",
+     speed:"Up to 22 m²/hr in 4-color",
+     uses:["Roll graphics and rigid sheet on one machine","5x10 ft aluminum composite signs","Exhibition and retail graphics"],
+     note:"Switches between roll and rigid in minutes. Buys you both without buying both machines — at the cost of being best at neither."},
+
+    {id:"ujv300dtf", name:"UJV300DTF-75", cat:"UV-DTF transfer",
+     form:"transfer", rollW:25.2, foot:"floor", tier:3,
+     flex:true, cut:false, cam:false, kebab:false, conv:false,
+     inks:"ELS-170 CMYK + ELH-100 white and clear",
+     speed:"Not published on the model page",
+     uses:["Curved and uneven surfaces","Mugs, helmets, vases, lunchboxes","Items too big or awkward for a bed","No weeding required"],
+     note:"Prints a transfer you apply by hand, so the object never has to fit in a machine. Inline lamination is built in."}
+  ];
+
+  var MBY={}; MACHINES.forEach(function(m){MBY[m.id]=m;});
+
+  function vqf(m,f){ return (m.vq&&m.vq.indexOf(f)>-1) ? '<i class="vflag" title="Needs verifying by PDS">&#9888;</i>' : ''; }
+
+  /* ---- the questions ---- */
+  var WIZQ=[
+    {k:"what", q:"What are you printing on?",
+     help:"This is the fork in the road. Everything after it narrows from here.",
+     opts:[
+      ["object","Finished objects and products","Tumblers, awards, pens, phone cases, patches, panels — the thing goes into the machine"],
+      ["sheet","Rigid flat sheet","Acrylic, ACM, PVC, wood, coroplast — signage cut from sheet goods"],
+      ["roll","Roll media","Vinyl, film, banner, wallpaper — it comes off a roll and goes back on one"],
+      ["mix","Both rigid sheet and roll","You want one machine to cover signage in both formats"],
+      ["transfer","Transfers I apply by hand","The item is too big, too curved or too awkward to put in a machine"]
+     ]},
+
+    {k:"size", q:"How big is the largest piece?", when:function(a){return a.what==="object";},
+     help:"Measure the footprint on the bed, not the artwork.",
+     opts:[
+      ["s","Up to about 11 x 16 inches","A placemat. Most drinkware, awards and promo items live here"],
+      ["m","Up to about 24 x 16 inches","Twice the width. More parts per jig, bigger single pieces"],
+      ["l","Up to about 28 x 20 inches","Large panels, or a lot of small parts ganged up at once"]
+     ]},
+
+    {k:"size", q:"How big is the largest sheet?", when:function(a){return a.what==="sheet"||a.what==="mix";},
+     help:"Full sheet goods in the US are usually 4x8 ft or 5x10 ft.",
+     opts:[
+      ["s","Up to about 4 x 4 ft","Cut-down sheet, displays, art panels"],
+      ["m","Up to about 5 x 8 ft","Most standard sheet goods"],
+      ["l","Full 5 x 10 ft sheets, all day","Production sign shop volume"]
+     ]},
+
+    {k:"size", q:"How wide is your media?", when:function(a){return a.what==="roll";},
+     help:"Widest roll you would realistically run, not the widest you have ever seen.",
+     opts:[
+      ["s","Up to 54 inches","Standard vinyl and decal work"],
+      ["m","Up to 64 inches","Wraps, banners, most sign shop roll work"],
+      ["l","Wider than 64 inches","Billboards, building wraps, full-width banner"]
+     ]},
+
+    {k:"tall", q:"How tall is the tallest object?", when:function(a){return a.what==="object";},
+     help:"Head clearance is the spec that surprises people. A tumbler in a jig is taller than the tumbler.",
+     opts:[
+      ["s","Under 6 inches","Flat goods, patches, plates, most awards lying down"],
+      ["m","6 to 10 inches","Standing bottles, tall tumblers, boxes, tall fixtures"],
+      ["l","Taller than 10 inches","Nothing on this list will swallow it — worth seeing what the answer looks like"]
+     ]},
+
+    {k:"flex", q:"Does the print need to bend or stretch after it is cured?",
+     help:"This is the single most common expensive mistake. Rigid ink on something that flexes will crack.",
+     opts:[
+      ["y","Yes","Hat patches, leatherette, wraps, anything that gets pressed, curved or stretched"],
+      ["n","No","Hard goods only — glass, metal, acrylic, wood, rigid plastic"],
+      ["b","Both, depending on the job","You want the option to run either ink set"]
+     ]},
+
+    {k:"cut", q:"Do you need cut lines on the same machine?",
+     when:function(a){return a.what==="roll"||a.what==="mix";},
+     help:"Printing and cutting in one pass removes a whole handling step — and a whole registration problem.",
+     opts:[
+      ["y","Yes, print and cut together","Stickers, decals, labels, contour-cut graphics"],
+      ["n","No, I cut separately","You already have a plotter or a laser doing the cutting"]
+     ]},
+
+    {k:"vol", q:"How much of this are you running?",
+     help:"Be honest here. Buying for the volume you hope to have is how machines end up sitting idle.",
+     opts:[
+      ["low","Short runs and one-offs","A few jobs a week, lots of variety, nothing repeats much"],
+      ["mid","Steady daily work","The machine runs most days but not all shift"],
+      ["high","Full production","It runs all day and the bottleneck is throughput"]
+     ]},
+
+    {k:"rep", q:"Same part over and over, or a different thing every time?",
+     when:function(a){return a.what==="object";},
+     help:"This decides whether camera registration is worth paying for or a feature you will never switch on.",
+     opts:[
+      ["jig","Mostly repeat runs from jigs","Same fixture, same setup, high piece counts"],
+      ["one","Mostly one-offs and short custom runs","New setup nearly every job"],
+      ["both","A real mix of both","Some standing accounts, some custom work"]
+     ]}
+  ];
+
+  function wizSteps(){ return WIZQ.filter(function(q){ return !q.when || q.when(S.wiz); }); }
+
+  /* ---- scoring: hard filters first, then preference ---- */
+  function wizScore(m,a){
+    var why=[], care=[], sc=0;
+
+    /* form — the hard fork */
+    if(a.what==="object" && m.form!=="object") return null;
+    if(a.what==="sheet"  && m.form!=="flatbed" && m.form!=="hybrid") return null;
+    if(a.what==="roll"   && m.form!=="roll") return null;
+    if(a.what==="mix"    && m.form!=="hybrid" && m.form!=="flatbed") return null;
+    if(a.what==="transfer" && m.form!=="transfer" && m.form!=="object") return null;
+
+    /* size */
+    if(a.what==="object"){
+      var need={s:[11.8,16.5],m:[23.6,16.5],l:[28,20]}[a.size]||[0,0];
+      if(m.bedW+0.01 < need[0] || m.bedH+0.01 < need[1]) return null;
+      if(m.bedW >= need[0]*1.6) { sc+=1; why.push("Bed is comfortably larger than your biggest piece — room to gang parts up in one jig"); }
+      else why.push("Bed fits your largest piece at "+m.bedW+'" x '+m.bedH+'"');
+    }
+    if(a.what==="mix"){
+      if(m.form==="hybrid"){ sc+=5; why.push("Switches between roll and rigid sheet on one machine — the only thing on this list that does"); }
+      else { sc-=4; care.push("Flatbed only — it will not run roll media at all, so this is half of a two-machine answer"); }
+    }
+    if(a.what==="sheet"||a.what==="mix"){
+      var needS={s:48,m:60,l:60}[a.size]||0;
+      var needL={s:48,m:96,l:120}[a.size]||0;
+      var mw=Math.max(m.bedW||0,m.bedH||0), mn=Math.min(m.bedW||0,m.bedH||0);
+      if(mw+0.5<needS || (a.size==="l" && mw<96)) return null;
+      if(a.size==="l" && m.tier<4) care.push("Full 5x10 sheets will need loading in passes or a bigger bed");
+      why.push("Handles sheet up to about "+Math.round(mw)+'" x '+Math.round(mn)+'"');
+    }
+    if(a.what==="roll"){
+      var needW={s:53,m:63,l:96}[a.size]||0;
+      if((m.rollW||0)+0.5 < needW) return null;
+      if(m.rollW > needW*1.45){ sc-=4; care.push("Far wider than you need at "+m.rollW+'" — that is floor space, media handling and money spent on width you never use'); }
+      else why.push("Prints up to "+m.rollW+'" wide'+(m.rollWAlt?" (a "+m.rollWAlt+'" model is also offered)':""));
+    }
+
+    /* object height — the spec people get burned by */
+    if(a.what==="object"){
+      var needH={s:5.5,m:9.5,l:12}[a.tall]||0;
+      if((m.maxH||0) < needH) return null;
+      if(a.tall==="m") { sc+=2; why.push("Head clearance of "+m.maxH+'" takes the taller items — this is where the older benchtops stop'); }
+      else why.push("Head clearance "+m.maxH+'", bed rated to '+m.maxWt+" lb");
+    }
+
+    /* flexible ink */
+    if(a.flex==="y"||a.flex==="b"){
+      if(!m.flex) return null;
+      sc+=1; why.push("Flexible ink set available — prints survive pressing, curving and stretching");
+    }
+
+    /* in-line cutting */
+    if(a.cut==="y"){
+      if(m.cut){ sc+=3; why.push("Prints and contour-cuts in one pass — no second machine, no re-registration"); }
+      else care.push("No cutting on board — you would still be moving work to a plotter");
+    }
+
+    /* volume */
+    if(a.vol==="high"){
+      sc += m.tier>=4?3:(m.tier>=3?1:-1);
+      if(m.tier>=5) sc+=1.5; /* at full production, speed is the whole argument */
+      if(m.tier>=4) why.push("Built for full-shift throughput"); else care.push("Likely to become the bottleneck at full production volume");
+    }
+    if(a.vol==="mid"){ sc += (m.tier===2||m.tier===3)?2:0; }
+    if(a.vol==="low"){ sc += m.tier<=2?3:(m.tier===3?1:-2); if(m.tier>=4) care.push("More machine than short-run work needs — the capacity would sit idle"); }
+
+    /* repeat work and camera registration */
+    if(a.rep==="jig"){ if(m.cam){ sc+=0.5; why.push("Camera registration available, though a well-made jig already solves placement on repeat runs"); } if(m.conv){ sc+=1.5; why.push("Conveyor option for continuous runs"); } }
+    if(a.rep==="one"||a.rep==="both"){ if(m.cam){ sc+=2; why.push("Camera registration places artwork on whatever you put down — worth a lot when every job is a new setup"); } }
+
+    /* cylindrical */
+    if(a.what==="object" && m.kebab) why.push("Kebab attachment available for 360-degree cylindrical work");
+
+    /* transfer path teaching moment */
+    if(a.what==="transfer" && m.form==="object"){ sc-=2; care.push("Direct printing only works if the item physically fits on the bed — check before you rule out transfers"); }
+    if(a.what==="transfer" && m.form==="transfer"){ sc+=4; }
+
+    sc += (5-m.tier)*0.25; /* gentle nudge toward the smaller machine when everything else ties */
+    return {m:m, sc:sc, why:why, care:care};
+  }
+
+  function wizResults(){
+    var a=S.wiz, out=[];
+    MACHINES.forEach(function(m){ var r=wizScore(m,a); if(r) out.push(r); });
+    out.sort(function(x,y){ return y.sc-x.sc; });
+    return out;
+  }
+
+  function specChips(m){
+    var c=[];
+    if(m.form==="object") c.push("Bed "+m.bedW+'" x '+m.bedH+'"'+vqf(m,"bedW"));
+    if(m.form==="flatbed") c.push("Bed "+m.bedW+'" x '+m.bedH+'"');
+    if(m.form==="hybrid") c.push("Roll "+m.rollW+'" &middot; rigid to '+m.bedW+'"');
+    if(m.form==="roll"||m.form==="transfer") c.push("Print width "+m.rollW+'"');
+    if(m.maxH) c.push("Object height "+m.maxH+'"');
+    if(m.maxWt) c.push("Bed load "+m.maxWt+" lb");
+    if(m.thick) c.push("Material to "+m.thick+'"');
+    c.push(m.foot==="bench"?"Benchtop":"Floor standing");
+    if(m.cam) c.push("Camera registration");
+    if(m.cut) c.push("In-line cutting");
+    if(m.conv) c.push("Conveyor option");
+    return '<div class="mspecs">'+c.map(function(x){return '<span class="mspec">'+x+'</span>';}).join("")+'</div>';
+  }
+
+  function ownersOf(id){ return PEOPLE.filter(function(p){ return p.gear.indexOf(id)>-1; }); }
+
+  function recCard(r,i){
+    var m=r.m, own=ownersOf(m.id);
+    var rank = i===0 ? '<span class="mrank">Closest fit</span>' : '<span class="mrank alt">Also worth seeing</span>';
+    return '<div class="mrec'+(i===0?" top":"")+'">'+
+      '<div class="mrec-h">'+rank+'<h4>'+esc(m.name)+'</h4><div class="cat">'+esc(m.cat)+'</div></div>'+
+      specChips(m)+
+      '<div class="mwhy">'+
+        '<div><h5>Why it came up</h5><ul>'+r.why.slice(0,4).map(function(w){return '<li>'+w+'</li>';}).join("")+'</ul></div>'+
+        (r.care.length?'<div><h5>Worth knowing first</h5><ul>'+r.care.map(function(w){return '<li>'+w+'</li>';}).join("")+'</ul></div>':
+          '<div><h5>Ink sets</h5><ul><li>'+esc(m.inks)+'</li><li>'+esc(m.speed)+'</li></ul></div>')+
+      '</div>'+
+      '<div class="mfoot">'+
+        '<button class="btn sm">Talk to my PDS rep about this</button>'+
+        (own.length?'<button class="btn ghost sm" data-gear="'+m.id+'">'+own.length+' '+(own.length===1?"attendee here runs":"attendees here run")+' one</button>':'')+
+        '<p class="note">'+esc(m.note)+'</p>'+
+      '</div></div>';
+  }
+
+  function vWiz(){
+    var h='<p class="eyebrow">Find a printer</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 12px">Which UV printer is actually yours?</h2>'+
+      '<p class="lede" style="margin-bottom:18px">Six questions, no sales pitch, no price on the screen. It narrows the list and tells you why — then hands you to a rep who can do the part a web page should not.</p>'+
+      '<div class="protobar">'+icon("spark")+'<div><b>Prototype &mdash; sample data, not approved copy</b>'+
+        '<p>Specs here were read off Mimaki\'s published pages to make the demo work. Nothing has been checked by PDS. Anything flagged &#9888; is a figure we could not confirm. The recommendation logic is a first guess and should be rewritten by whoever actually sells these machines.</p></div></div>';
+
+    if(S.wmode==="all") return h+wizAll()+'<div class="wnav"><button class="btn ghost" data-wmode="wiz">Back to the questions</button></div>';
+
+    var steps=wizSteps(), done=steps.filter(function(q){return S.wiz[q.k]!==undefined;});
+    var cur=null;
+    for(var i=0;i<steps.length;i++){ if(S.wiz[steps[i].k]===undefined){ cur=steps[i]; break; } }
+
+    /* the picks so far, as removable context */
+    var picks="";
+    if(done.length){
+      picks='<div class="wpicks">'+done.map(function(q){
+        var lab=""; q.opts.forEach(function(o){ if(o[0]===S.wiz[q.k]) lab=o[1]; });
+        return '<span class="wpick"><b>'+esc(lab)+'</b></span>';
+      }).join("")+'</div>';
+    }
+
+    if(cur){
+      var bars='<div class="wsteps">'+steps.map(function(q,ix){
+        var cls = S.wiz[q.k]!==undefined ? "done" : (q===cur?"on":"");
+        return '<span class="wstep '+cls+'"></span>';
+      }).join("")+'</div>';
+      return h+bars+picks+
+        '<h3 class="wq">'+esc(cur.q)+'</h3><p class="whelp">'+esc(cur.help)+'</p>'+
+        '<div class="wopts">'+cur.opts.map(function(o){
+          return '<button class="wopt" data-wa="'+cur.k+'::'+o[0]+'"><b>'+esc(o[1])+'</b><span>'+esc(o[2])+'</span></button>';
+        }).join("")+'</div>'+
+        '<div class="wnav">'+
+          (done.length?'<button class="btn ghost sm" data-wback="1">Back a step</button>':'')+
+          '<button class="btn ghost sm" data-wmode="all">Skip this and just show me everything</button>'+
+        '</div>';
+    }
+
+    /* results */
+    var res=wizResults();
+    var body='';
+    if(!res.length){
+      body='<div class="nomatch"><b>Nothing on this list is a clean fit</b>'+
+        '<p>That is a useful answer, not a failure. What you described is outside what these machines do well &mdash; which is exactly the conversation to have with a rep in person rather than with a web form. Worth asking about: a different process entirely, or splitting the work across two machines.</p></div>';
+    } else {
+      body=res.slice(0,3).map(recCard).join("");
+      if(res.length>3) body+='<p class="note" style="margin-top:10px">'+(res.length-3)+' other '+(res.length-3===1?"machine":"machines")+' would technically do the job but scored lower on fit.</p>';
+    }
+    return h+picks+
+      '<h3 class="wq" style="margin-bottom:14px">Here is where you landed</h3>'+body+
+      '<div class="wnav">'+
+        '<button class="btn ghost" data-wreset="1">Start over</button>'+
+        '<button class="btn ghost" data-wmode="all">Compare everything side by side</button>'+
+        '<button class="btn ghost" data-tab="people">Find someone here who runs one</button>'+
+      '</div>'+
+      '<p class="note" style="margin-top:16px">Nothing you answered leaves your phone in this demo. On a real build this would be the point to decide, deliberately, whether an answer becomes a lead or stays private to the attendee.</p>';
+  }
+
+  function wizAll(){
+    var rows=MACHINES.map(function(m){
+      var size = m.form==="roll"||m.form==="transfer" ? m.rollW+'" wide'
+        : m.form==="hybrid" ? m.rollW+'" roll / '+m.bedW+'" rigid'
+        : m.bedW+'" x '+m.bedH+'"'+vqf(m,"bedW");
+      var height = m.maxH ? m.maxH+'" object' : (m.thick? m.thick+'" material' : "—");
+      var own=ownersOf(m.id).length;
+      return '<tr><td><b>'+esc(m.name)+'</b><small>'+esc(m.cat)+'</small></td>'+
+        '<td>'+size+'</td><td>'+height+'</td>'+
+        '<td>'+esc(m.inks)+'</td>'+
+        '<td>'+(m.cam?"Camera ":"")+(m.cut?"Cuts ":"")+(m.conv?"Conveyor ":"")+(m.kebab?"Kebab ":"")+(!m.cam&&!m.cut&&!m.conv&&!m.kebab?"—":"")+'</td>'+
+        '<td>'+(m.foot==="bench"?"Benchtop":"Floor")+'</td>'+
+        '<td>'+(own?'<button class="btn ghost sm" data-gear="'+m.id+'">'+own+'</button>':'<small>—</small>')+'</td></tr>';
+    }).join("");
+    return '<div class="mtwrap"><table class="mt">'+
+      '<thead><tr><th>Machine</th><th>Max size</th><th>Clearance</th><th>Ink sets</th><th>Options</th><th>Form</th><th>Owners here</th></tr></thead>'+
+      '<tbody>'+rows+'</tbody></table></div>'+
+      '<p class="note" style="margin-top:12px">Sorted by family, not by price &mdash; no pricing appears anywhere in this tool on purpose. &#9888; marks a figure that still needs confirming.</p>';
+  }
+
+  /* ============ WHO RUNS WHAT — voluntary equipment directory ============ */
+
+  var GEARCAT=[
+    ["UV printing",[["ujf3042","UJF-3042 MkII e"],["ujf2003042","UJF200-3042"],["ujf6042","UJF-6042 MkII e"],["ujf2006042","UJF200-6042"],["ujf7151","UJF-7151 plusII e"],["jfx2001213","JFX200-1213 EX"],["jfx2202515","JFX220-2515"],["jfx6002513","JFX600-2513"],["ujv100","UJV100-160Plus"],["ujv200","UJV200 Series"],["ucjv330","UCJV330 Series"],["ujv55320","UJV55-320"],["uj330h","UJ330H-160"],["ujv300dtf","UJV300DTF-75"]]],
+    ["Laser and engraving",[["co2","CO2 laser"],["fiber","Fiber laser"],["galvo","Galvo / UV laser"],["rotary","Rotary engraver"],["sandblast","Sandblast cabinet"]]],
+    ["Apparel and transfer",[["dtf","DTF printer"],["subl","Sublimation"],["press","Heat press"],["emb","Embroidery"],["screen","Screen printing"]]],
+    ["Cutting and fabrication",[["vinyl","Vinyl cutter / plotter"],["cnc","CNC router"],["fdm","3D printer"]]]
+  ];
+  var GEARNAME={}; GEARCAT.forEach(function(c){ c[1].forEach(function(g){ GEARNAME[g[0]]=g[1]; }); });
+
+  var PEOPLE=[
+    {n:"Marisol Reyes",  s:"Anchor Line Signs",    f:"Fundraisers · Collegiate",  help:true,  gear:["ujf6042","co2","vinyl","press"]},
+    {n:"Dale Whitcomb",  s:"Whitcomb Awards",      f:"Awards · Sandblasting",     help:true,  gear:["ujf3042","co2","sandblast","rotary"]},
+    {n:"Priya Raman",    s:"Two Rivers Engraving", f:"Hat patches · Leatherette", help:true,  gear:["ujf6042","co2","emb","press"]},
+    {n:"Gwen Halloran",  s:"Halloran Studio",      f:"Drinkware · 360° printing", help:true,  gear:["ujf2006042","fiber","subl"]},
+    {n:"Tom Ferreira",   s:"Ferreira Signworks",   f:"Signage · Roll-to-roll",    help:false, gear:["ucjv330","jfx2001213","vinyl","cnc"]},
+    {n:"Alma Trice",     s:"Trice & Daughters",    f:"Spirits brands · Onsite",   help:true,  gear:["ujf6042","co2","fdm"]},
+    {n:"Curtis Boyle",   s:"Boyle Custom Co.",     f:"Promo · Short runs",        help:false, gear:["ujf3042","subl","press","vinyl"]},
+    {n:"Nora Pell",      s:"Northwoods Craft Co.", f:"Wood · Home décor",         help:true,  gear:["ujf3042","co2","cnc"]},
+    {n:"Carl King",      s:"King Pin Design",      f:"Industrial parts · Panels", help:true,  gear:["ujf7151","fiber","rotary"]},
+    {n:"Sylvie Andrade", s:"Andrade Makery",       f:"Relief panels · Art",       help:false, gear:["ujf2006042","co2","fdm"]},
+    {n:"Peter Mazur",    s:"Mazur Design House",   f:"Plaques · Layered acrylic", help:true,  gear:["ujf6042","co2","vinyl"]},
+    {n:"Ruth Calder",    s:"Calder Bindery",       f:"Books · Specialty print",   help:false, gear:["ujf3042","press"]},
+    {n:"Marcus Reyland", s:"Reyland Signworks",    f:"Signage · Vehicle wraps",   help:true,  gear:["uj330h","ucjv330","vinyl"]},
+    {n:"Dana Whitfield", s:"Coastal Line Studio",  f:"Acrylic · Layered work",    help:false, gear:["ujf6042","co2"]}
+  ];
+
+  function gearPills(list){
+    if(!list.length) return '<span class="pill" style="opacity:.6">Not shared</span>';
+    return list.map(function(g){ return '<span class="pill">'+esc(GEARNAME[g]||g)+'</span>'; }).join("");
+  }
+
+  function vPeople(){
+    if(!S.joined){
+      return '<p class="eyebrow">People</p><h2 style="font-size:1.5rem;margin:8px 0 12px">Opt in to be listed</h2>'+
+        '<p class="lede" style="margin-bottom:16px">Nobody appears here unless they choose to. Share your name, your shop and what you work on, and you can see everyone else who opted in.</p>'+
+        '<button class="btn" id="join">List me</button>'+
+        '<p class="note" style="margin-top:14px">You can remove yourself at any time, and nothing is shared outside the event.</p>';
+    }
+
+    var mine=Object.keys(S.gear).filter(function(k){return S.gear[k];});
+    var f=S.gfilter, qq=(S.psearch||"").trim().toLowerCase();
+    /* one box, searching everything a person is: name, shop, what they work on, what they run */
+    function hay(p){
+      return (p.n+" "+p.s+" "+p.f+" "+p.gear.map(function(g){return GEARNAME[g]||g;}).join(" ")).toLowerCase();
+    }
+    function hit(p){ return (!f || p.gear.indexOf(f)>-1) && (!qq || hay(p).indexOf(qq)>-1); }
+    var shown = PEOPLE.filter(hit);
+    var meHay = ("You Purple Shark Designs Laser 3D printing Onsite events "+
+      mine.map(function(g){return GEARNAME[g]||g;}).join(" ")).toLowerCase();
+    var meMatches = (!f || mine.indexOf(f)>-1) && (!qq || meHay.indexOf(qq)>-1);
+
+    /* the machines anyone in the room has actually claimed, most common first */
+    var counts={}; PEOPLE.filter(function(p){ return !qq || hay(p).indexOf(qq)>-1; })
+      .forEach(function(p){ p.gear.forEach(function(g){ counts[g]=(counts[g]||0)+1; }); });
+    if(!qq || meHay.indexOf(qq)>-1) mine.forEach(function(g){ counts[g]=(counts[g]||0)+1; });
+    var haveList=Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
+
+    var searchbox='<div class="psearch">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m15.6 15.6 4.2 4.2"/></svg>'+
+      '<input id="psearch" type="search" autocomplete="off" placeholder="Search names, shops, what people work on, what they run" value="'+esc(S.psearch||"")+'">'+
+      (qq?'<button class="btn ghost sm" data-pclear="1">Clear</button>':'')+
+    '</div>';
+
+    var chips='<div class="chips" style="margin-bottom:16px">'+
+      '<button class="chip-f" data-gf="" aria-pressed="'+(!f)+'">Everyone<b>'+(PEOPLE.length+1)+'</b></button>'+
+      haveList.map(function(g){
+        return '<button class="chip-f" data-gf="'+g+'" aria-pressed="'+(f===g)+'">'+esc(GEARNAME[g]||g)+'<b>'+counts[g]+'</b></button>';
+      }).join("")+'</div>';
+
+    /* your own opt-in panel */
+    var mypanel='<div class="composer" style="margin-bottom:20px">'+
+      '<b style="display:block;font-size:.97rem;font-weight:700">What do you run?</b>'+
+      '<p class="note" style="margin:5px 0 13px">Entirely optional, and separate from being listed at all. No quantities, no serial numbers, no purchase dates &mdash; just which machines you know your way around, so somebody with a question can find a person instead of a forum thread. Untick anything at any time.</p>'+
+      GEARCAT.map(function(c){
+        return '<p class="eyebrow" style="margin:12px 0 7px">'+esc(c[0])+'</p><div class="chips">'+
+          c[1].map(function(g){
+            return '<button class="chip-f" data-gtog="'+g[0]+'" aria-pressed="'+(!!S.gear[g[0]])+'">'+esc(g[1])+'</button>';
+          }).join("")+'</div>';
+      }).join("")+
+      '<div style="border-top:1px solid var(--rule-soft);margin-top:16px;padding-top:14px">'+
+        '<button class="chip-f" data-helptog="1" aria-pressed="'+(!!S.help)+'">'+(S.help?"&#10003; ":"")+'Happy to answer questions about my gear</button>'+
+        '<p class="note" style="margin-top:9px">Turning this on puts a small badge next to your name. It does not publish your phone number or your email &mdash; people reach you through the app, and you answer or you don\'t. Plenty of people share their equipment without wanting to be a help desk, so it is a separate switch.</p>'+
+      '</div>'+
+      '</div>';
+
+    var helpBadge='<span class="qdest" style="margin:0 0 0 8px;background:var(--surface-2);color:var(--ok)">Will help</span>';
+    var rowsHtml='';
+    if(meMatches){
+      rowsHtml+='<div class="row fresh"><div><div class="who">You'+(S.help?helpBadge:"")+'</div><div class="sub">Purple Shark Designs · Laser · 3D printing · Onsite events</div>'+
+        '<div class="pills" style="margin-top:7px">'+gearPills(mine)+'</div></div><div class="when">just now</div></div>';
+    }
+    rowsHtml+=shown.map(function(p){
+      var ans=PANSWERS[p.n];
+      return '<div class="row"><div><div class="who">'+esc(p.n)+(p.help?helpBadge:"")+
+        (ans?'<span class="anscount">'+ans+' answers</span>':'')+'</div>'+
+        '<div class="sub">'+esc(p.s)+' · '+esc(p.f)+(PREGION[p.n]?' · '+esc(PREGION[p.n]):'')+'</div>'+
+        '<div class="pills" style="margin-top:7px">'+gearPills(p.gear)+'</div></div>'+
+        '<button class="btn ghost sm">Connect</button></div>';
+    }).join("");
+    if(!rowsHtml) rowsHtml='<div class="empty">'+(qq?'Nobody matches &ldquo;'+esc(S.psearch)+'&rdquo;'+(f?' who also runs the '+esc(GEARNAME[f]||f):''):'Nobody listed has shared that one yet.')+'</div>';
+
+    var head = f
+      ? '<h2 style="font-size:1.5rem;margin:8px 0 6px">'+(shown.length+(meMatches?1:0))+' running the '+esc(GEARNAME[f]||f)+'</h2>'+
+        '<p class="lede" style="margin-bottom:16px">These are the people to corner at the bar. They have already made the mistakes you are about to make.</p>'
+      : '<h2 style="font-size:1.5rem;margin:8px 0 6px">'+(PEOPLE.length+1)+' makers opted in</h2>'+
+        '<p class="lede" style="margin-bottom:16px">Filter by machine to find someone who runs what you run &mdash; or what you are thinking about buying.</p>';
+
+    return '<p class="eyebrow">People</p>'+head+mypanel+searchbox+chips+
+      '<div class="rows">'+rowsHtml+'</div>'+
+      '<p class="note" style="margin-top:16px">Sharing your equipment is voluntary and separate from being listed. It is visible to other opted-in attendees only, it records no quantities, and it is not a purchase history.</p>';
+  }
+
+
+  /* ============ COMMUNITY OF PRACTICE — the 362 days between shows ============ */
+
+  /* people do not only ask — they look for help and offer capacity. A board that
+     only takes questions misses the half where makers actually work together. */
+  var KINDS=[["q","Question"],["need","Looking for help"],["offer","Offering"]];
+  var KINDNAME={}; KINDS.forEach(function(k){KINDNAME[k[0]]=k[1];});
+
+  var TOPICS=[
+    ["ink","Ink & primer"],["jig","Jigs & fixtures"],["soft","Software & RIP"],
+    ["maint","Maintenance"],["biz","Pricing & business"],["mat","Materials"],["laser","Laser & engraving"],["appa","Apparel & transfer"]
+  ];
+  var TOPICNAME={}; TOPICS.forEach(function(t){TOPICNAME[t[0]]=t[1];});
+
+  var THREADS=[
+    {id:1, title:"Cracking on hat patches after pressing — rigid ink, my own fault?",
+     by:"Priya Raman", shop:"Two Rivers Engraving", gear:"ujf6042", topic:"ink", when:"3 days ago", solved:true,
+     body:"Ran 200 patches for a construction account on LH-100 because that is what was loaded. They looked perfect coming off the bed and cracked along the fold the second they went through the press. Is there any saving these or is it a reprint?",
+     replies:[
+       {by:"Trevor Bates", shop:"PDS Equipment", helpful:true, when:"3 days ago",
+        t:"Reprint, sorry. Rigid ink has no give in it at all — once it has cracked the film is broken, nothing reflows. Flexible ink set for anything that gets pressed, curved or stretched. Five thin layers beats two thick ones on patches too."},
+       {by:"Gwen Halloran", shop:"Halloran Studio", when:"2 days ago",
+        t:"Made this exact mistake last year on leatherette. The tell is that it looks fine until it moves. Now I keep a scrap of the actual substrate and fold it before the run goes out."}
+     ]},
+    {id:2, title:"What is everyone charging for a one-off engraved tumbler?",
+     by:"Curtis Boyle", shop:"Boyle Custom Co.", gear:"ujf3042", topic:"biz", when:"6 days ago", solved:false,
+     body:"Not asking anyone to give away their pricing sheet. But I keep landing around a number that feels too low once I count the setup, and I would rather know if I am the outlier before I raise it on a standing customer.",
+     replies:[
+       {by:"Alma Trice", shop:"Trice & Daughters", when:"5 days ago",
+        t:"The thing that changed it for me was pricing the setup separately from the piece. A one-off and a run of fifty are not the same job even if the artwork is identical, and customers understand that once you say it out loud."}
+     ]},
+    {id:3, title:"Machine sat three weeks over the holidays — what do I check before I print?",
+     by:"Nora Pell", shop:"Northwoods Craft Co.", gear:"ujf3042", topic:"maint", when:"last week", solved:true,
+     body:"First long shutdown since I bought it and I am nervous about the first print. Is there a proper wake-up sequence or do I just send a nozzle check and hope?",
+     replies:[
+       {by:"Trevor Bates", shop:"PDS Equipment", helpful:true, when:"last week",
+        t:"Ideally you leave the power on through a shutdown so it runs its own refresh cycles — that solves most of this before it starts. Coming back cold: check ink levels and dates first so nothing is empty or expired, empty the waste tank, wet the cap tops with F-15, then nozzle check. Do not start with a hard clean, you will just burn ink."},
+       {by:"Carl King", shop:"King Pin Design", when:"6 days ago",
+        t:"Adding one thing — write the shutdown date on a sticky note on the lid. Three weeks and six weeks are different conversations and you will not remember which it was."}
+     ]},
+    {id:4, title:"Anyone printing on powder-coated metal without primer?",
+     by:"Dale Whitcomb", shop:"Whitcomb Awards", gear:"ujf3042", topic:"mat", when:"2 weeks ago", solved:false,
+     body:"Adhesion is fine on the matte coats and terrible on anything with a gloss to it. Priming everything costs me a minute a piece which adds up fast on a 300-piece award order. Is there a middle ground or is that just the cost of gloss?",
+     replies:[]},
+    {id:5, title:"Sharing the jig file I use for 12 coasters at once",
+     by:"Peter Mazur", shop:"Mazur Design House", gear:"ujf6042", topic:"jig", when:"2 weeks ago", solved:false,
+     body:"Took me four revisions to get the registration right so you may as well skip to the good one. Cut from 3mm acrylic, pin-registered off the back left corner. Happy to send the file to anyone who wants it, just say so here.",
+     replies:[
+       {by:"Dana Whitfield", shop:"Coastal Line Studio", when:"12 days ago", t:"Yes please. This is exactly the thing that is impossible to find and takes a weekend to work out yourself."},
+       {by:"Sylvie Andrade", shop:"Andrade Makery", when:"11 days ago", t:"Me too. And thank you — four revisions is four weekends someone else does not have to spend."}
+     ]},
+    {id:6, kind:"need", title:"Need 400 patches run by the 14th — my machine is down",
+     by:"Marisol Reyes", shop:"Anchor Line Signs", gear:"ujf6042", topic:"biz", when:"4 days ago", solved:true,
+     body:"Head strike, parts are a week out, and the customer will not move the date. Happy to pay properly and send artwork ready to go. Anyone within a day's freight of Atlanta with a 6042 and a free afternoon?",
+     replies:[
+       {by:"Priya Raman", shop:"Two Rivers Engraving", helpful:true, when:"4 days ago",
+        t:"I can take them. Flex ink is already loaded and I have the jig. Send the file and I will run a proof tonight."},
+       {by:"Marisol Reyes", shop:"Anchor Line Signs", when:"3 days ago",
+        t:"Done and shipped. This is the second time this board has saved a deadline for me — thank you."}
+     ]},
+    {id:8, kind:"q", title:"6042 is laying down a faint band on the third pass — nozzle check looks clean",
+     by:"Curtis Boyle", shop:"Boyle Custom Co.", gear:"ujf6042", topic:"maint", when:"2 days ago", solved:false,
+     body:"Only shows up on wide flood areas, only on the third pass and after. Nozzle check is perfect before and after. Same file printed fine last month. Before I call it in I would like to know if anyone else has chased this one.",
+     replies:[]},
+    {id:9, kind:"q", title:"Cutting 3mm acrylic for jigs — what feed and power are you running?",
+     by:"Sylvie Andrade", shop:"Andrade Makery", gear:"co2", topic:"jig", when:"5 days ago", solved:false,
+     body:"Getting a taper on the edge that throws my registration off by half a millimetre across a big jig. 60W tube. I can live with a slow pass if it comes out square.",
+     replies:[]},
+    {id:7, kind:"offer", title:"Offering: fiber laser time if anyone needs metal marked",
+     by:"Carl King", shop:"King Pin Design", gear:"ujf7151", topic:"biz", when:"9 days ago", solved:false,
+     body:"The fiber sits idle most of the week. If you have a UV job that needs a marked metal component and you do not have a fiber, send it over — I would rather it run than sit. Not looking to make money on it, just covering setup.",
+     replies:[
+       {by:"Nora Pell", shop:"Northwoods Craft Co.", when:"8 days ago",
+        t:"Taking you up on this. I have been turning down anything with a metal plate for two years because buying a fiber for six jobs makes no sense."}
+     ]}
+  ];
+
+  function threadTag(t){
+    var bits=[];
+    if(t.kind&&t.kind!=="q") bits.push('<span class="pill kind">'+esc(KINDNAME[t.kind])+'</span>');
+    if(t.topic) bits.push('<span class="pill">'+esc(TOPICNAME[t.topic]||t.topic)+'</span>');
+    if(t.gear){
+      var gn = MBY[t.gear] ? MBY[t.gear].name : GEARNAME[t.gear];
+      if(gn) bits.push('<span class="pill" style="background:var(--uv-soft);color:var(--uv)">'+esc(gn)+'</span>');
+    }
+    return bits.join("");
+  }
+
+  function vComm(){
+    var f=S.cfilter||"all";
+    var list=S.threads.slice();
+    if(f==="open") list=list.filter(function(t){return !t.replies.length;});
+    else if(f==="solved") list=list.filter(function(t){return t.solved;});
+    else if(f==="mine"){
+      var mine=Object.keys(S.gear).filter(function(k){return S.gear[k];});
+      list=list.filter(function(t){return t.gear && mine.indexOf(t.gear)>-1;});
+    }
+    else if(f.indexOf("k:")===0){ var kk=f.slice(2); list=list.filter(function(t){return t.kind===kk;}); }
+    else if(f!=="all") list=list.filter(function(t){return t.topic===f;});
+
+    var unanswered=S.threads.filter(function(t){return !t.replies.length;}).length;
+
+    var chips='<div class="chips" style="margin-bottom:16px">'+
+      '<button class="chip-f" data-cf="all" aria-pressed="'+(f==="all")+'">All<b>'+S.threads.length+'</b></button>'+
+      '<button class="chip-f" data-cf="open" aria-pressed="'+(f==="open")+'">Still unanswered<b>'+unanswered+'</b></button>'+
+      '<button class="chip-f" data-cf="mine" aria-pressed="'+(f==="mine")+'">About my machines</button>'+
+      KINDS.filter(function(k){return k[0]!=="q";}).map(function(k){
+        var n=S.threads.filter(function(x){return x.kind===k[0];}).length;
+        return '<button class="chip-f" data-cf="k:'+k[0]+'" aria-pressed="'+(f==="k:"+k[0])+'">'+esc(k[1])+'<b>'+n+'</b></button>';
+      }).join("")+
+      TOPICS.map(function(t){
+        var n=S.threads.filter(function(x){return x.topic===t[0];}).length;
+        if(!n) return "";
+        return '<button class="chip-f" data-cf="'+t[0]+'" aria-pressed="'+(f===t[0])+'">'+esc(t[1])+'<b>'+n+'</b></button>';
+      }).join("")+'</div>';
+
+    var composer='<div class="composer">'+
+      '<textarea id="ctext" placeholder="Ask the room. Somebody has already hit this."></textarea>'+
+      '<div class="comp-row">'+
+        '<span class="comp-dest">Posting <select id="ckind">'+KINDS.map(function(k){return '<option value="'+k[0]+'">'+esc(k[1])+'</option>';}).join("")+'</select></span>'+
+        '<span class="comp-dest">Topic <select id="cdest">'+TOPICS.map(function(t){return '<option value="'+t[0]+'">'+esc(t[1])+'</option>';}).join("")+'</select></span>'+
+        '<button class="btn" id="cpost">Post to the community</button>'+
+      '</div>'+
+      '<p class="note" style="margin-top:10px">Posts here are not anonymous. People answer questions when they can see who is asking, and the person who answers deserves the credit.</p>'+
+    '</div>';
+
+    var body=list.map(function(t){
+      var open=S.copen===t.id;
+      return '<div class="qcard">'+
+        '<div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap">'+
+          '<h4 style="font-size:1rem;font-weight:600;flex:1;min-width:200px">'+esc(t.title)+'</h4>'+
+          (t.solved?'<span class="badge in">Answered</span>':(t.replies.length?'':'<span class="badge clash">Needs an answer</span>'))+
+        '</div>'+
+        '<div class="qm" style="margin-top:5px">'+esc(t.by)+' &middot; '+esc(t.shop)+' &middot; '+esc(t.when)+'</div>'+
+        '<div class="pills" style="margin-top:8px">'+threadTag(t)+'</div>'+
+        '<p style="font-size:.9rem;color:var(--ink-2);margin-top:11px">'+esc(t.body)+'</p>'+
+        (t.replies.length?
+          '<div class="answers" style="margin-left:0;margin-top:14px">'+t.replies.map(function(r){
+            return '<div class="ans"><div class="ans-by"><b>'+esc(r.by)+'</b><span>'+esc(r.shop)+'</span>'+
+              (r.helpful?'<span class="qdest" style="margin:0">Marked helpful</span>':'')+
+              '<span style="margin-left:auto">'+esc(r.when)+'</span></div><p>'+esc(r.t)+'</p></div>';
+          }).join("")+'</div>'
+          :'<p class="note" style="margin-top:12px">No replies yet. This is the one to answer if you know it.</p>')+
+        (open?
+          '<div class="composer" style="margin:14px 0 0"><textarea id="rtext" placeholder="Answer '+esc(t.by.split(" ")[0])+'..."></textarea>'+
+          '<div class="comp-row"><button class="btn sm" data-rpost="'+t.id+'">Post reply</button>'+
+          '<button class="btn ghost sm" data-copen="0">Cancel</button></div></div>'
+          :'<button class="btn ghost sm" style="margin-top:13px" data-copen="'+t.id+'">Reply</button>')+
+      '</div>';
+    }).join("");
+
+    if(!body) body='<div class="empty">Nothing here under that filter yet.</div>';
+
+    return '<p class="eyebrow">Community</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">The other 362 days</h2>'+
+      '<p class="lede" style="margin-bottom:18px">The show ends Thursday. The questions do not. Three things happen here: people get answers, people find each other, and people work together &mdash; overflow runs, a machine somebody else has, a deadline saved. Somebody in Ohio at 9pm on a Tuesday can ask the room instead of guessing, and the answer stays findable for the next person who hits the same wall.</p>'+
+      '<div class="protobar">'+icon("spark")+'<div><b>Prototype &mdash; sample threads</b>'+
+        '<p>Everything below is made up to show the shape of it. A real one needs someone from PDS reading it, a way to report a bad post, and a decision about whether non-attendees can read it. That is a real commitment of somebody\'s time &mdash; worth saying plainly rather than pretending it runs itself.</p></div></div>'+
+      queuePanel()+composer+chips+body+rhythmPanel()+
+      '<p class="note" style="margin-top:18px">Different from the Ask board during the show: that one feeds questions to a session happening in the next hour. This one is slower, year-round, and searchable &mdash; so the answer Trevor gives once gets found fifty times.</p>';
+  }
+
+  S.threads = THREADS.map(function(t){var o=Object.assign({},t);o.replies=t.replies.slice();return o;});
+
+
+  /* ============ AROUND NASHVILLE — the part attendees write themselves ============
+     Deliberately built as a contributed list rather than a curated page: PDS should
+     not be in the restaurant-recommendation business, and last year's attendees are
+     better at it anyway. It compounds — year two starts with year one's list. */
+
+  var CITYCAT=[["coffee","Coffee"],["food","Food"],["drinks","Drinks & music"],["see","Worth seeing"],["run","Get outside"],["prac","Practical"]];
+  var CITYNAME={}; CITYCAT.forEach(function(c){CITYNAME[c[0]]=c[1];});
+
+  var SPOTS=[
+    {c:"coffee", n:"Barista Parlor", d:"Big industrial space, takes coffee seriously. Good for a quiet hour with a laptop before the first session.", w:"Short drive or rideshare", by:"Marisol Reyes", v:14},
+    {c:"coffee", n:"Frothy Monkey", d:"Several locations around town, one of them handy to Midtown. Does actual breakfast, not just pastries.", w:"Walkable from Midtown hotels", by:"Nora Pell", v:11},
+    {c:"coffee", n:"Crema", d:"Downtown-adjacent, roasts their own. Small, so not the spot for a group of eight.", w:"Rideshare", by:"Dale Whitcomb", v:7},
+
+    {c:"food", n:"Hattie B's Hot Chicken", d:"The hot chicken everyone tells you to try. Order one heat level below whatever your ego suggests — this is not a joke and the line is long at lunch.", w:"Midtown location is the closest", by:"Tom Ferreira", v:23},
+    {c:"food", n:"Arnold's Country Kitchen", d:"Meat-and-three, cafeteria line, closes mid-afternoon and on weekends. Lunch only, and worth rearranging your day for.", w:"Rideshare, 10 min", by:"Carl King", v:18},
+    {c:"food", n:"Prince's Hot Chicken", d:"The original. Further out and worth the trip if you have an evening free.", w:"Rideshare", by:"Gwen Halloran", v:12},
+    {c:"food", n:"Pancake Pantry", d:"Hillsboro Village institution. There is always a line; it moves faster than it looks.", w:"Walkable from Midtown", by:"Ruth Calder", v:9},
+
+    {c:"drinks", n:"The Station Inn", d:"Bluegrass in a cinder-block room that has not changed in decades. Cash bar, no frills, and the playing is extraordinary.", w:"Gulch, short rideshare", by:"Alma Trice", v:19},
+    {c:"drinks", n:"Robert's Western World", d:"Broadway honky-tonk that is still mostly about the music. Free to get in, fried bologna sandwich on the menu.", w:"Lower Broadway", by:"Marcus Reyland", v:16},
+    {c:"drinks", n:"Attaboy", d:"No menu, no sign. You tell them what you like and they make something. Small, so go early or expect to wait.", w:"East Nashville, rideshare", by:"Curtis Boyle", v:8},
+    {c:"drinks", n:"Skip lower Broadway on Friday night", d:"Honest warning rather than a recommendation. It is loud, packed, and mostly bachelorette parties. The good music is off the main drag.", w:"—", by:"Peter Mazur", v:21},
+
+    {c:"see", n:"Country Music Hall of Fame", d:"Genuinely good museum even if country is not your thing. Two hours minimum, more if you read everything.", w:"Downtown, walkable from SoBro hotels", by:"Sylvie Andrade", v:15},
+    {c:"see", n:"RCA Studio B", d:"Where a frankly ridiculous number of records were cut. Tour leaves from the Hall of Fame — book it with your museum ticket.", w:"Music Row", by:"Marisol Reyes", v:13},
+    {c:"see", n:"The Parthenon at Centennial Park", d:"A full-scale replica, indoors and out, for reasons that make more sense once you are standing in front of it. Ten minutes from Midtown and a good walk.", w:"Walkable from the Westin", by:"Nora Pell", v:10},
+    {c:"see", n:"Johnny Cash Museum", d:"Small and dense. Better than the size suggests.", w:"Downtown", by:"Dale Whitcomb", v:6},
+
+    {c:"run", n:"Centennial Park loop", d:"Flat, shaded, about a mile and a bit around. The one everyone staying in Midtown ends up doing.", w:"Walkable", by:"Tom Ferreira", v:9},
+    {c:"run", n:"Shelby Bottoms Greenway", d:"Proper trail along the river if you want distance and not much company.", w:"East side, rideshare", by:"Carl King", v:4},
+
+    {c:"prac", n:"BNA to Midtown", d:"Rideshare is about 20 minutes off-peak and noticeably worse at 5pm. There is no train.", w:"Airport", by:"Gwen Halloran", v:17},
+    {c:"prac", n:"Hotel parking is not cheap", d:"If you are driving in, check the daily rate before you arrive. Lots a couple of blocks out are usually much less.", w:"—", by:"Alma Trice", v:14},
+    {c:"prac", n:"September is still summer here", d:"Pack for humidity. The walk that looks like six blocks on the map feels longer at 2pm.", w:"—", by:"Priya Raman", v:12}
+  ];
+
+  function vCity(){
+    var f=S.cityf||"all";
+    var list=S.spots.slice();
+    if(f!=="all") list=list.filter(function(x){return x.c===f;});
+    list.sort(function(a,b){return b.v-a.v;});
+
+    var chips='<div class="chips" style="margin-bottom:16px">'+
+      '<button class="chip-f" data-cityf="all" aria-pressed="'+(f==="all")+'">Everything<b>'+S.spots.length+'</b></button>'+
+      CITYCAT.map(function(c){
+        var n=S.spots.filter(function(x){return x.c===c[0];}).length;
+        return '<button class="chip-f" data-cityf="'+c[0]+'" aria-pressed="'+(f===c[0])+'">'+esc(c[1])+'<b>'+n+'</b></button>';
+      }).join("")+'</div>';
+
+    var composer='<div class="composer">'+
+      '<textarea id="sptext" placeholder="Somewhere you found that the rest of us should know about — or something to skip."></textarea>'+
+      '<div class="comp-row">'+
+        '<span class="comp-dest">Name <input id="spname" type="text" placeholder="The place" autocomplete="off"></span>'+
+        '<span class="comp-dest">Category <select id="spcat">'+CITYCAT.map(function(c){return '<option value="'+c[0]+'">'+esc(c[1])+'</option>';}).join("")+'</select></span>'+
+        '<button class="btn" id="sppost">Add it</button>'+
+      '</div></div>';
+
+    var body=list.map(function(x,i){
+      var k=x.n, up=!!S.spotv[k];
+      return '<div class="spot">'+
+        '<button class="qvote" data-spot="'+esc(k)+'" aria-pressed="'+up+'"><b>'+x.v+'</b><span>Useful</span></button>'+
+        '<div><h4>'+esc(x.n)+'</h4>'+
+          '<p class="spd">'+esc(x.d)+'</p>'+
+          '<div class="spm"><span class="pill">'+esc(CITYNAME[x.c]||x.c)+'</span>'+
+            (x.w&&x.w!=="—"?'<span class="spw">'+esc(x.w)+'</span>':'')+
+            '<span class="spby">'+esc(x.by)+'</span></div>'+
+        '</div></div>';
+    }).join("");
+    if(!body) body='<div class="empty">Nothing under that one yet. Add the first.</div>';
+
+    return '<p class="eyebrow">Around Nashville</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">Where to eat, what to see, what to skip</h2>'+
+      '<p class="lede" style="margin-bottom:18px">Most people fly in, see the inside of a hotel and fly home. This is the list the room writes for itself &mdash; and it is the same list waiting for the next person, a year from now, with a year more in it.</p>'+
+      '<div class="protobar">'+icon("spark")+'<div><b>Prototype &mdash; sample entries</b>'+
+        '<p>Real places, but the write-ups and the names attached to them are invented. On a real build this is attendee-written, not PDS-written &mdash; nobody at PDS wants to be responsible for a restaurant recommendation, and last year\'s attendees are better at it anyway.</p></div></div>'+
+      composer+chips+body+
+      '<p class="note" style="margin-top:18px">Worth noticing: this is the one page that is most useful <b>before</b> anyone travels, and it is the page that compounds. Year two opens with year one\'s list already on it.</p>';
+  }
+
+
+  /* Two different things were being called "vendors": the companies with a booth
+     this September, and the companies PDS works with all year. Lonestar was not at
+     the 2026 show and is still a partner. Keeping them in one list makes the page
+     wrong for eleven months. */
+  var PARTNERS=[
+    {n:"Lonestar Substrates",w:"Acrylic, ACM and rigid sheet stock",at:false,b:"",
+     offer:"Attendee pricing on sheet goods",code:"PDSPARTNER",exp:"Standing offer",
+     why:"Not exhibiting in 2027 — still a PDS partner and still worth knowing"},
+    {n:"Ridgeway Ink Technologies",w:"Third-party UV inks and cleaning chemistry",at:false,b:"",
+     offer:"",code:"",exp:"",why:"Partner supplier, no booth this year"},
+    {n:"Halverson Rigging",w:"Machine moves, rigging and install",at:false,b:"",
+     offer:"",code:"",exp:"",why:"Called in per job rather than exhibiting"},
+    {n:"Tallgrass Blanks",w:"Wholesale drinkware and hardwood blanks",at:false,b:"",
+     offer:"Net-30 terms for PDS customers",code:"",exp:"Standing offer",
+     why:"Exhibited in 2025, sitting 2027 out"}
+  ];
+
+  function vendCard(v){
+    return '<div class="vendor">'+
+      '<div class="v-head"><div><h4>'+esc(v.n)+'</h4><div class="v-what">'+esc(v.w)+'</div></div>'+
+        (v.b?'<span class="booth">Booth '+esc(v.b)+'</span>':'<span class="booth off">No booth</span>')+'</div>'+
+      (v.why?'<p class="v-why">'+esc(v.why)+'</p>':'')+
+      (v.offer?'<div class="v-offer"><div><b>'+esc(v.offer)+'</b>'+(v.exp?'<span>'+esc(v.exp)+'</span>':'')+'</div>'+
+        (v.code?'<button class="codechip" data-code="'+esc(v.code)+'">'+esc(v.code)+'</button>':'')+'</div>':'')+
+      '<div class="v-acts"><button class="btn ghost sm">Visit store</button><button class="btn ghost sm">Save</button></div>'+
+    '</div>';
+  }
+
+  function vVend(){
+    var during=S.phase==="during";
+    var tiers=["Presenting","Gold","Silver"];
+    var sp=tiers.map(function(t){
+      var list=SPONSORS.filter(function(s){return s.tier===t;});
+      if(!list.length) return "";
+      return '<p class="eyebrow" style="margin:20px 0 9px">'+t+' sponsor'+(list.length>1?'s':'')+'</p>'+
+        '<div class="sponsors'+(t==="Presenting"?" lead":"")+'">'+list.map(function(s){
+          return '<div class="sponsor"><b>'+esc(s.name)+'</b><span>'+esc(s.note)+'</span></div>';
+        }).join("")+'</div>';
+    }).join("");
+
+    var showBlock='<p class="eyebrow" style="margin:24px 0 6px">'+(during?"Exhibiting this week":"Exhibited at Nashville 2027")+'</p>'+
+      '<p class="note" style="margin-bottom:12px">'+(during
+        ? "Booth numbers and show offers. Codes live here instead of on a flyer you lost on Tuesday."
+        : "Show offers have expired, but the listings stay so you can find who you talked to.")+'</p>'+
+      '<div class="vendors">'+VENDORS.map(vendCard).join("")+'</div>';
+
+    var partBlock='<p class="eyebrow" style="margin:24px 0 6px">PDS partners not at the show</p>'+
+      '<p class="note" style="margin-bottom:12px">Companies PDS works with that did not take a booth this year. They are still partners, they still have standing offers, and they are the reason this page has a job in March.</p>'+
+      '<div class="vendors">'+PARTNERS.map(vendCard).join("")+'</div>';
+
+    return '<p class="eyebrow">Sponsors &amp; partners</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">'+(during?"Who\'s here, and what they\'re offering":"Who PDS works with")+'</h2>'+
+      '<p class="lede" style="margin-bottom:4px">Two different lists that usually get mashed into one: the companies with a booth this September, and the companies PDS works with all year. Each keeps its own listing current.</p>'+
+      sp+
+      (during ? showBlock+partBlock : partBlock+showBlock);
+  }
+
+  /* Photos: the show is three days, the work is year-round. Same wall, two streams. */
+  var SHOPPHOTOS=[
+    {cap:"Five-layer patch build, finally dialed in",by:"Priya Raman",tag:"What I made",stream:"shop",k:2},
+    {cap:"Jig for 12 coasters — revision four, the good one",by:"Peter Mazur",tag:"Jigs & setups",stream:"shop",k:4},
+    {cap:"Gloss-on-matte test tiles, six ink builds",by:"Curtis Boyle",tag:"Tests & failures",stream:"shop",k:1},
+    {cap:"What powder-coat looks like without primer. Don't.",by:"Dale Whitcomb",tag:"Tests & failures",stream:"shop",k:5},
+    {cap:"Bourbon barrel-head plaques, first full run",by:"Alma Trice",tag:"What I made",stream:"shop",k:3},
+    {cap:"Vacuum table mod, cost about nine dollars",by:"Carl King",tag:"Jigs & setups",stream:"shop",k:6},
+    {cap:"Layered acrylic lighthouse, 14 pieces",by:"Dana Whitfield",tag:"What I made",stream:"shop",k:2}
+  ];
+
+  function vPhotos(){
+    var during=S.phase==="during";
+    var stream=S.pstream||(during?"show":"shop");
+    var TAGS={show:["All","Inspiration Station","Show floor","Sessions","Social"],
+              shop:["All","What I made","Jigs & setups","Tests & failures"]};
+    var pool=S.photos.filter(function(p){ return (p.stream||"show")===stream; });
+
+    var counts={}; pool.forEach(function(p){counts[p.tag]=(counts[p.tag]||0)+1;});
+    var tags=TAGS[stream];
+    var active = tags.indexOf(S.pfilter)>-1 ? S.pfilter : "All";
+    var chips=tags.map(function(t){
+      var c = t==="All" ? pool.length : (counts[t]||0);
+      return '<button class="chip-f" data-pf="'+esc(t)+'" aria-pressed="'+(active===t)+'">'+t+' <b>'+c+'</b></button>';
+    }).join("");
+
+    var nShow=S.photos.filter(function(p){return (p.stream||"show")==="show";}).length;
+    var nShop=S.photos.filter(function(p){return p.stream==="shop";}).length;
+    var streams='<div class="chips" style="margin-bottom:14px">'+
+      '<button class="chip-f" data-pstream="show" aria-pressed="'+(stream==="show")+'">From the show<b>'+nShow+'</b></button>'+
+      '<button class="chip-f" data-pstream="shop" aria-pressed="'+(stream==="shop")+'">From the shop<b>'+nShop+'</b></button>'+
+    '</div>';
+
+    var list=pool.filter(function(p){ return active==="All" || p.tag===active; });
+    var grid=list.map(function(p){
+      var inner = p.url ? '<img src="'+p.url+'" alt="'+esc(p.cap)+'">'
+        : '<div class="ph-ph k'+((p.k%6)+1)+'" aria-hidden="true"></div>';
+      return '<figure class="photo">'+inner+
+        '<figcaption><b>'+esc(p.cap)+'</b><span>'+esc(p.by)+' · '+esc(p.tag)+'</span></figcaption></figure>';
+    }).join("");
+    if(!grid) grid='<div class="empty" style="grid-column:1/-1">Nothing under that one yet.</div>';
+
+    var lede = stream==="show"
+      ? 'Three hundred people photograph the Inspiration Station and it all goes home in a phone nobody else sees. Put it here and it becomes next year&rsquo;s marketing.'
+      : 'The show is three days. The work is every week. This is where the room posts what it actually made &mdash; including the things that did not work, which are usually the more useful post.';
+
+    return '<p class="eyebrow">Photo wall</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">'+(stream==="show"?"Everyone\'s camera roll, in one place":"What the room is making")+'</h2>'+
+      '<p class="lede" style="margin-bottom:16px">'+lede+'</p>'+
+      '<div class="uploader">'+
+        '<div><b>Add your photos</b><span>They appear straight away. Organizers can remove anything.</span></div>'+
+        '<label class="btn" for="photoin">Choose photos</label>'+
+        '<input type="file" id="photoin" accept="image/*" multiple hidden>'+
+      '</div>'+
+      streams+
+      '<div class="filterbar"><div class="chips">'+chips+'</div></div>'+
+      '<div class="photogrid">'+grid+'</div>'+
+      '<p class="note" style="margin-top:16px">'+(stream==="shop"
+        ? 'This stream is the argument for the whole site. A photo wall that only fills up for three days a year is a scrapbook; one that fills up every week is a reason to open the app.'
+        : 'In the demo nothing is uploaded anywhere &mdash; photos you add stay in this browser and vanish on refresh.')+'</p>';
+  }
+
+
+  /* ============ WHAT ACTUALLY KEEPS A COMMUNITY ALIVE ============
+     A board nobody is pulled back to is a dead board in four months. Goodwill is
+     not a mechanism. These are: route open questions to the handful of people who
+     own that exact machine, give the year a rhythm, and make answering visible. */
+
+  var REGIONS=["Ohio Valley","Southeast","Northeast","Midwest","Texas & South Central","West"];
+  var PREGION={
+    "Marisol Reyes":"Southeast","Dale Whitcomb":"Midwest","Priya Raman":"Ohio Valley",
+    "Gwen Halloran":"Northeast","Tom Ferreira":"Southeast","Alma Trice":"Ohio Valley",
+    "Curtis Boyle":"Midwest","Nora Pell":"Midwest","Carl King":"Texas & South Central",
+    "Sylvie Andrade":"West","Peter Mazur":"Ohio Valley","Ruth Calder":"Northeast",
+    "Marcus Reyland":"Texas & South Central","Dana Whitfield":"West"
+  };
+  var PANSWERS={
+    "Trevor Bates":54,"Priya Raman":22,"Carl King":19,"Alma Trice":17,"Marisol Reyes":14,
+    "Nora Pell":11,"Peter Mazur":9,"Dale Whitcomb":8,"Gwen Halloran":6,"Marcus Reyland":5
+  };
+
+  var RHYTHM=[
+    {when:"First Tuesday", t:"Open thread", d:"One question posted by PDS, answered by whoever knows. Low effort to run, and it puts a date on the calendar."},
+    {when:"Monthly", t:"Show us what you made", d:"A prompt into the shop photo stream. The stream is what makes the site worth opening in February."},
+    {when:"Monthly digest", t:"Five things you missed", d:"One email. Unanswered questions about your machines, best answer of the month, new people in your region."},
+    {when:"Rolling", t:"Answer requests", d:"When a question names a machine, it goes to the people who said they run one. Not a broadcast — three or four people who can actually answer."}
+  ];
+
+  /* the questions routed to you, because you said you run the machine */
+  function myQueue(){
+    var mine=Object.keys(S.gear).filter(function(k){return S.gear[k];});
+    return S.threads.filter(function(t){
+      return !t.replies.length && t.gear && mine.indexOf(t.gear)>-1;
+    });
+  }
+
+  function queuePanel(){
+    var mine=Object.keys(S.gear).filter(function(k){return S.gear[k];});
+    if(!mine.length){
+      return '<div class="queuebox empty-q">'+
+        '<b>Nothing is routed to you yet</b>'+
+        '<p>Tell People which machines you run and open questions about them come to you instead of sitting in a feed nobody reads. That routing is the difference between a message board and a community &mdash; it is what brings people back in February.</p>'+
+        '<button class="btn sm" data-tab="people">Share what I run</button></div>';
+    }
+    var q=myQueue();
+    if(!q.length){
+      return '<div class="queuebox clear-q">'+
+        '<b>You are clear</b>'+
+        '<p>Nothing unanswered about the '+mine.filter(function(g){return MBY[g];}).map(function(g){return esc(MBY[g].name);}).join(" or ")+
+        (mine.some(function(g){return !MBY[g];})?' (or your other gear)':'')+' right now. You will get a nudge when there is.</p></div>';
+    }
+    return '<div class="queuebox">'+
+      '<b>'+q.length+' '+(q.length===1?"question is":"questions are")+' waiting on you</b>'+
+      '<p>Nobody has answered these, and you said you run the machine. This is the nudge &mdash; four people who can actually help, not a broadcast to three hundred.</p>'+
+      q.map(function(t){
+        var gname = MBY[t.gear] ? MBY[t.gear].name : (GEARNAME[t.gear]||"");
+        return '<button class="qrow" data-copen="'+t.id+'"><span><b>'+esc(t.title)+'</b>'+
+          '<span>'+esc(t.by)+' · '+esc(t.when)+(gname?' · '+esc(gname):'')+'</span></span><span class="chev">›</span></button>';
+      }).join("")+
+    '</div>';
+  }
+
+  function rhythmPanel(){
+    return '<p class="eyebrow" style="margin:26px 0 10px">How it stays alive</p>'+
+      '<p class="note" style="margin-bottom:13px">Communities do not run on goodwill. They run on a reason to come back, on a schedule. This is the smallest set that works &mdash; and the first three are maybe an hour a month of somebody at PDS.</p>'+
+      '<div class="morelist">'+RHYTHM.map(function(r){
+        return '<div class="morerow static"><span class="rwhen">'+esc(r.when)+'</span>'+
+          '<span><b>'+esc(r.t)+'</b><span>'+esc(r.d)+'</span></span></div>';
+      }).join("")+'</div>';
+  }
+
+
+  /* ============ ORGANIZER: WHAT THE ROOM IS TELLING YOU ============
+     The whole argument in one screen. Everything here is a by-product of people
+     using the app for their own reasons — nobody filled in a survey. Aggregate
+     patterns only: PDS learns what the room needs, not what any one person does. */
+
+  var WIZRUNS=[
+    {m:"ujf2006042", n:41, note:"Tall objects and repeat jig work"},
+    {m:"ujf6042",    n:28, note:"Bed size, drinkware, patches"},
+    {m:"ujf3042",    n:22, note:"First machine, short runs"},
+    {m:"ucjv330",    n:14, note:"Print-and-cut in one pass"},
+    {m:"ujf7151",    n:9,  note:"Throughput, metallic silver"},
+    {m:"jfx2001213", n:7,  note:"Outgrew the benchtop"},
+    {m:"ujv300dtf",  n:6,  note:"Objects that will not fit a bed"}
+  ];
+  var GAPS=[
+    {t:"Flexible vs rigid ink", n:31, has:true,  note:"Covered in Hat Patch — and still the most-asked thing all year"},
+    {t:"Pricing custom one-offs", n:24, has:false, note:"No session on this. Asked constantly, on the board and in the hallway"},
+    {t:"Primer on coated metal", n:19, has:false, note:"No session. Four separate threads, none fully answered"},
+    {t:"Jig design and registration", n:17, has:true,  note:"Partly covered; people want a hands-on version"},
+    {t:"Collegiate and brand licensing", n:12, has:true,  note:"One session, room was full, ran over"},
+    {t:"Long shutdowns and restart", n:11, has:false, note:"No session. Seasonal — spikes every January"}
+  ];
+
+  function vInsights(){
+    var openQ=S.threads.filter(function(t){return !t.replies.length;});
+    var installed={}; PEOPLE.forEach(function(p){ p.gear.forEach(function(g){ if(MBY[g]) installed[g]=(installed[g]||0)+1; }); });
+    var instList=Object.keys(installed).sort(function(a,b){return installed[b]-installed[a];});
+    var helpers=PEOPLE.filter(function(p){return p.help;}).length;
+    var totalRuns=WIZRUNS.reduce(function(a,b){return a+b.n;},0);
+    var maxRun=WIZRUNS[0].n;
+
+    function bar(label,sub,n,max,lead){
+      return '<div class="barrow"><div class="barlabel"><div>'+esc(label)+'</div><span>'+esc(sub)+'</span>'+
+        '<div class="track"><div class="fill'+(lead?" lead":"")+'" style="width:'+Math.round(n/max*100)+'%"></div></div></div>'+
+        '<div class="barnum">'+n+'</div></div>';
+    }
+
+    return '<span class="stafftag">PDS staff only — attendees never see this</span>'+
+      '<p class="eyebrow">Organizer · Insights</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">What the room is telling you</h2>'+
+      '<p class="lede" style="margin-bottom:18px">Nobody filled in a survey for any of this. It is the residue of people using the app for their own reasons &mdash; which is why it is honest, and why it keeps arriving in February as well as September.</p>'+
+
+      '<div class="stats">'+
+        '<div class="stat"><span class="k">Printer finder runs</span><span class="v">'+totalRuns+'</span></div>'+
+        '<div class="stat"><span class="k">Machines in the room</span><span class="v">'+instList.length+' <small>models</small></span></div>'+
+        '<div class="stat"><span class="k">Offered to help others</span><span class="v">'+helpers+' <small>people</small></span></div>'+
+        '<div class="stat"><span class="k">Questions nobody answered</span><span class="v">'+openQ.length+'</span></div>'+
+      '</div>'+
+
+      '<p class="eyebrow" style="margin:26px 0 10px">What people are shopping for</p>'+
+      '<p class="note" style="margin-bottom:14px">Where the printer finder landed people, and what they said they needed to get there. This is demand, months before anyone calls a rep.</p>'+
+      '<div class="bars">'+WIZRUNS.map(function(r,i){
+        return bar(MBY[r.m]?MBY[r.m].name:r.m, r.note, r.n, maxRun, i===0);
+      }).join("")+'</div>'+
+
+      '<p class="eyebrow" style="margin:28px 0 10px">What the room already owns</p>'+
+      '<p class="note" style="margin-bottom:14px">Voluntarily shared. Two uses: it tells you what your install base actually runs, and it tells you who to ask when you need a customer to speak on a panel or take a reference call.</p>'+
+      '<div class="bars">'+instList.map(function(g,i){
+        return bar(MBY[g].name, MBY[g].cat, installed[g], installed[instList[0]], i===0);
+      }).join("")+'</div>'+
+
+      '<p class="eyebrow" style="margin:28px 0 10px">Where the content gaps are</p>'+
+      '<p class="note" style="margin-bottom:14px">What people ask about, against what the show actually covered. The rows marked <b>no session</b> are next year&rsquo;s agenda, written by the people who will attend it.</p>'+
+      '<div class="rows">'+GAPS.map(function(g){
+        return '<div class="row"><div><div class="who">'+esc(g.t)+'</div><div class="sub">'+esc(g.note)+'</div></div>'+
+          '<div style="display:flex;gap:9px;align-items:center">'+
+            (g.has?'<span class="badge done">Covered</span>':'<span class="badge clash">No session</span>')+
+            '<span class="when">'+g.n+' asks</span></div></div>';
+      }).join("")+'</div>'+
+
+      (openQ.length?'<p class="eyebrow" style="margin:28px 0 10px">Answer these and the board stays alive</p>'+
+        '<div class="rows">'+openQ.map(function(t){
+          return '<div class="row"><div><div class="who">'+esc(t.title)+'</div>'+
+            '<div class="sub">'+esc(t.by)+' · '+esc(t.shop)+' · '+esc(t.when)+'</div></div>'+
+            '<button class="btn ghost sm" data-tab="comm">Open</button></div>';
+        }).join("")+'</div>':'')+
+
+      '<div class="sep"></div>'+
+      '<p class="note">Aggregate patterns, not surveillance. Nothing here says what any one person clicked, and the equipment directory only contains what people chose to share. The moment it feels like tracking, people stop sharing and the data stops being worth having.</p>';
+  }
+
+  S.spots = SPOTS.map(function(x){return Object.assign({},x);});
+  S.photos = S.photos.concat(SHOPPHOTOS.map(function(x){return Object.assign({},x);}));
+
+
+  /* ============ THE SUPPLIER LENS ============
+     Steve sees everything. A sponsor or supplier should see the demand signal and
+     nothing else — no names, no shops, no individual behaviour. Worth building the
+     boundary into the demo rather than promising it in a sentence. */
+  var SUPPLY=[
+    {t:"Flexible ink for patches and leatherette", n:37, note:"Most-asked material question, twelve months running"},
+    {t:"Primer for coated and glazed surfaces", n:29, note:"Recurring failure point — people are buying primer after the reprint, not before"},
+    {t:"Hook-and-loop backing and patch stock", n:24, note:"Rising. Tracks the growth in hat patch work"},
+    {t:"Jig material — 3mm acrylic, pin register", n:21, note:"People are cutting their own; several asking who sells ready-made"},
+    {t:"Leatherette in small quantities", n:18, note:"Repeated complaint about case minimums"},
+    {t:"Hardwood and slate blanks, small runs", n:15, note:"Seasonal, spikes Sept–Nov"},
+    {t:"Cleaning fluids and lint-free swabs", n:13, note:"Steady, low drama, nobody stocks enough"},
+    {t:"Packaging that suits a one-off gift", n:11, note:"Underserved — asked about far more than it is sold"}
+  ];
+
+  function vSupply(){
+    var max=SUPPLY[0].n;
+    return '<span class="stafftag ven">Sponsor view — no names, no individual activity</span>'+
+      '<p class="eyebrow">Sponsor · Demand signal</p>'+
+      '<h2 style="font-size:1.5rem;margin:8px 0 10px">What the room keeps asking for</h2>'+
+      '<p class="lede" style="margin-bottom:18px">The version of the data a supplier should see: aggregate need, ranked, with no way to work backwards to a person or a shop. It tells you what to stock and what to bring to the booth. It does not tell you who to call, and that is the point &mdash; the moment it does, people stop sharing and the signal dies.</p>'+
+      '<div class="bars">'+SUPPLY.map(function(x,i){
+        return '<div class="barrow"><div class="barlabel"><div>'+esc(x.t)+'</div><span>'+esc(x.note)+'</span>'+
+          '<div class="track"><div class="fill'+(i===0?" lead":"")+'" style="width:'+Math.round(x.n/max*100)+'%"></div></div></div>'+
+          '<div class="barnum">'+x.n+'</div></div>';
+      }).join("")+'</div>'+
+      '<div class="sep"></div>'+
+      '<p class="note">For PDS this is a second reason the site pays for itself: it is something to offer sponsors that no other event in this space can, and it is worth more to them than a logo on a banner.</p>';
+  }
+
+  /* ============ PDS-PUBLISHED TRAINING ============ */
+  var TRAINING=[
+    {g:"Getting started", items:[
+      ["Unboxing and first print","Walkthrough from crate to first job on a UJF benchtop","Video · 22 min"],
+      ["Ink sets explained","Rigid, flexible, primer, clear — what each is for and when it bites you","Video · 14 min"],
+      ["Your first jig","Designing, cutting and registering a simple multi-part jig","Video · 31 min"]
+    ]},
+    {g:"Settings and profiles", items:[
+      ["Leatherette settings sheet","Starting profiles by ink set, with notes on what to change and why","PDF"],
+      ["Drinkware and the Kebab","Speeds, passes and the two mistakes everybody makes first","Video · 18 min"],
+      ["Coated metal and primer","When to primer, how much, and how to tell before you commit a run","PDF"]
+    ]},
+    {g:"Maintenance", items:[
+      ["Daily, weekly, monthly","The routine, in the order it should actually be done","PDF"],
+      ["Coming back from a shutdown","Two weeks, six weeks, and the long one — different answers","Video · 11 min"],
+      ["Nozzle checks and what they mean","Reading the pattern instead of reflexively running a clean","Video · 9 min"]
+    ]},
+    {g:"Software", items:[
+      ["RasterLink: layers and builds","Multi-layer texture and gloss work, step by step","Video · 27 min"],
+      ["Variable data without losing your mind","Names, numbers and batches from a spreadsheet","Video · 19 min"],
+      ["Spot colour and PANTONE matching","Getting a brand colour close, and knowing when close is close enough","Video · 24 min"]
+    ]}
+  ];
+
+  function trainingBlock(){
+    return '<p class="eyebrow" style="margin:26px 0 8px">Training from PDS</p>'+
+      '<p class="note" style="margin-bottom:14px">Published by PDS, not scraped from anywhere. This is the piece that makes the site worth a bookmark rather than a visit &mdash; and every question the board answers twice is a candidate to become a video here.</p>'+
+      TRAINING.map(function(g){
+        return '<p class="eyebrow" style="margin:18px 0 8px">'+esc(g.g)+'</p>'+
+          '<div class="rows">'+g.items.map(function(it){
+            return '<div class="row"><div><div class="who">'+esc(it[0])+'</div><div class="sub">'+esc(it[1])+'</div></div>'+
+              '<span class="pill">'+esc(it[2])+'</span></div>';
+          }).join("")+'</div>';
+      }).join("")+
+      '<div class="protobar" style="margin:16px 0 0">'+icon("spark")+'<div><b>Prototype &mdash; invented titles</b>'+
+        '<p>Placeholders to show the shape. The real version is whatever PDS already has on video or in a settings sheet, finally in one findable place instead of scattered across emails and YouTube.</p></div></div>';
+  }
+
+  var VIEWS={home:vHome,sched:vSched,mine:vMine,ask:vAsk,vote:vVote,people:vPeople,photos:vPhotos,res:vRes,wiz:vWiz,comm:vComm,city:vCity,vend:vVend,archive:vArchive,more:vMore,insights:vInsights,supply:vSupply,dash:vDash,results:vResults,queue:vQueue};
+
+  function drawQR(){
+    var box=document.getElementById("qrbox"); if(!box) return;
+    var url=location.href;
+    if(location.protocol==="file:"){
+      box.innerHTML='<p style="font-size:11px;color:#444;text-align:center;line-height:1.5;padding:6px">'+
+        'This is the offline copy, so there is no web address to turn into a QR code yet.<br><br>'+
+        'Once it is on a real address the code appears here.</p>';
+      return;
+    }
+    try{
+      if(typeof qrcode!=="function") throw new Error("no lib");
+      var qr=qrcode(0,"M"); qr.addData(url); qr.make();
+      var n=qr.getModuleCount(), q=2, sz=n+q*2, rects="";
+      for(var r=0;r<n;r++){ for(var c=0;c<n;c++){ if(qr.isDark(r,c)) rects+='<rect x="'+(c+q)+'" y="'+(r+q)+'" width="1" height="1"/>'; } }
+      box.innerHTML='<svg viewBox="0 0 '+sz+' '+sz+'" shape-rendering="crispEdges" role="img" aria-label="QR code linking to this page">'+
+        '<rect width="'+sz+'" height="'+sz+'" fill="#fff"/><g fill="#000">'+rects+'</g></svg>';
+    }catch(e){
+      box.innerHTML='<p style="font-size:10px;color:#333;word-break:break-all;text-align:center;line-height:1.4">'+esc(url)+'</p>';
+    }
+  }
+
+  /* typing in a filter re-renders the view, which would otherwise throw away the caret */
+  document.addEventListener("input",function(ev){
+    if(ev.target.id==="psearch"){ S.psearch=ev.target.value; S.refocus="psearch"; render(); }
+  });
+
+  function render(){
+    document.getElementById("r-att").setAttribute("aria-pressed",String(S.role==="att"));
+    document.getElementById("r-org").setAttribute("aria-pressed",String(S.role==="org"));
+    document.getElementById("r-ven").setAttribute("aria-pressed",String(S.role==="ven"));
+    ["before","during","after"].forEach(function(ph){
+      document.getElementById("p-"+ph).setAttribute("aria-pressed",String(S.phase===ph));
+    });
+    renderNav();
+    /* blur first: innerHTML throws if it tears out the element that currently has focus */
+    if(document.activeElement && main.contains(document.activeElement)) document.activeElement.blur();
+    main.innerHTML='<section class="view">'+(VIEWS[S.tab]||vHome)()+'</section>';
+    if(S.refocus){
+      var fel=document.getElementById(S.refocus);
+      if(fel){ fel.focus(); try{ fel.setSelectionRange(fel.value.length,fel.value.length); }catch(e){} }
+      S.refocus=null;
+    }
+  }
+
+  /* ---------------- events ---------------- */
+  ["before","during","after"].forEach(function(ph){
+    document.getElementById("p-"+ph).addEventListener("click",function(){
+      S.phase=ph;
+      /* a tab that does not exist in this phase would otherwise render into nothing */
+      if(S.role==="att" && !tabLive(S.tab)) S.tab="home";
+      render(); window.scrollTo({top:0,behavior:"instant"});
+    });
+  });
+  document.getElementById("r-att").addEventListener("click",function(){S.role="att";S.tab="home";render();});
+  document.getElementById("r-org").addEventListener("click",function(){S.role="org";S.tab="insights";render();});
+  document.getElementById("r-ven").addEventListener("click",function(){S.role="ven";S.tab="supply";render();});
+
+  var installBtn=document.getElementById("installBtn"), installPanel=document.getElementById("installPanel");
+  document.addEventListener("change",function(ev){
+    var el=ev.target;
+    if(el.id==="qsess"){ S.qfilter = el.value || "All"; render(); }
+    else if(el.id==="qsort"){ S.qsort = el.value; render(); }
+    else if(el.id==="photoin"){
+      var files=[].slice.call(el.files||[]);
+      files.forEach(function(f){
+        if(!/^image\//.test(f.type)) return;
+        S.photos.unshift({cap:f.name.replace(/\.[^.]+$/,""),by:"You",tag:S.pfilter==="All"?"Show floor":S.pfilter,url:URL.createObjectURL(f),k:1});
+      });
+      if(files.length) render();
+    }
+  });
+
+  installBtn.addEventListener("click",function(){
+    var open=installPanel.hidden;
+    installPanel.hidden=!open;
+    installBtn.setAttribute("aria-expanded",String(open));
+    if(open) installPanel.scrollIntoView({block:"nearest",behavior:"smooth"});
+  });
+
+  document.addEventListener("click",function(ev){
+    var t=ev.target.closest("[data-tab],[data-go],[data-day],[data-star],[data-check],[data-vote],[data-q],[data-qf],[data-pf],[data-read],[data-code],[data-card],[data-wa],[data-wback],[data-wreset],[data-wmode],[data-gf],[data-gtog],[data-helptog],[data-pclear],[data-gear],[data-cf],[data-cityf],[data-spot],[data-pstream],[data-copen],[data-rpost],#join,#qpost,#cpost,#sppost");
+    if(!t) return;
+
+    /* ---- printer finder ---- */
+    if(t.dataset.wa){
+      var pair=t.dataset.wa.split("::");
+      S.wiz[pair[0]]=pair[1];
+      /* a changed answer can strand later answers that no longer apply */
+      var keep={}; wizSteps().forEach(function(q){keep[q.k]=1;});
+      Object.keys(S.wiz).forEach(function(k){ if(!keep[k]) delete S.wiz[k]; });
+      render(); window.scrollTo({top:0,behavior:"instant"}); return;
+    }
+    if(t.dataset.wback){
+      var st=wizSteps(), last=null;
+      st.forEach(function(q){ if(S.wiz[q.k]!==undefined) last=q.k; });
+      if(last) delete S.wiz[last];
+      render(); return;
+    }
+    if(t.dataset.wreset){ S.wiz={}; S.wmode="wiz"; render(); window.scrollTo({top:0,behavior:"instant"}); return; }
+    if(t.dataset.wmode){ S.wmode=t.dataset.wmode; render(); window.scrollTo({top:0,behavior:"instant"}); return; }
+
+    /* ---- equipment directory ---- */
+    if(t.dataset.gear){ S.gfilter=t.dataset.gear; S.psearch=""; S.tab="people"; S.joined=true; render(); window.scrollTo({top:0,behavior:"instant"}); return; }
+    if(t.dataset.pclear){ S.psearch=""; render(); return; }
+    if(t.dataset.gf!==undefined){ S.gfilter=t.dataset.gf; render(); return; }
+    if(t.dataset.gtog){ S.gear[t.dataset.gtog]=!S.gear[t.dataset.gtog]; render(); return; }
+    if(t.dataset.helptog){ S.help=!S.help; render(); return; }
+
+    /* ---- community board ---- */
+    if(t.dataset.cf){ S.cfilter=t.dataset.cf; render(); return; }
+    if(t.dataset.cityf){ S.cityf=t.dataset.cityf; render(); return; }
+    if(t.dataset.pstream){ S.pstream=t.dataset.pstream; S.pfilter="All"; render(); return; }
+    if(t.dataset.spot){
+      var sk=t.dataset.spot;
+      S.spots.forEach(function(x){ if(x.n===sk) x.v += S.spotv[sk]?-1:1; });
+      S.spotv[sk]=!S.spotv[sk]; render(); return;
+    }
+    if(t.id==="sppost"){
+      var spn=document.getElementById("spname"), spt=document.getElementById("sptext");
+      var nm=spn?spn.value.trim():"", dd=spt?spt.value.trim():"";
+      if(!nm){ if(spn) spn.focus(); return; }
+      if(!dd){ if(spt) spt.focus(); return; }
+      S.spots.unshift({c:(document.getElementById("spcat")||{}).value||"food",
+        n:nm, d:dd, w:"", by:"You", v:1});
+      S.spotv[nm]=true; S.cityf="all"; render(); window.scrollTo({top:0,behavior:"instant"}); return;
+    }
+    if(t.dataset.copen!==undefined){ S.copen=+t.dataset.copen; render(); return; }
+    if(t.id==="cpost"){
+      var cta=document.getElementById("ctext"), ctxt=cta?cta.value.trim():"";
+      if(!ctxt){ if(cta) cta.focus(); return; }
+      var cd=(document.getElementById("cdest")||{}).value||"ink";
+      var mineG=Object.keys(S.gear).filter(function(k){return S.gear[k];});
+      S.threads.unshift({id:++S.cseq, title:ctxt.split(/[.?!\n]/)[0].slice(0,90)+(ctxt.length>90?"...":""),
+        by:"You", shop:"Purple Shark Designs", gear:(mineG[0]&&MBY[mineG[0]])?mineG[0]:null,
+        kind:(document.getElementById("ckind")||{}).value||"q",
+        topic:cd, when:"just now", solved:false, body:ctxt, replies:[]});
+      S.cfilter="all"; render(); window.scrollTo({top:0,behavior:"instant"}); return;
+    }
+    if(t.dataset.rpost){
+      var rid=+t.dataset.rpost, rta=document.getElementById("rtext"), rtxt=rta?rta.value.trim():"";
+      if(!rtxt){ if(rta) rta.focus(); return; }
+      S.threads.forEach(function(x){ if(x.id===rid) x.replies.push({by:"You",shop:"Purple Shark Designs",when:"just now",t:rtxt}); });
+      S.copen=0; render(); return;
+    }
+    if(t.dataset.pf){ S.pfilter=t.dataset.pf; render(); return; }
+    if(t.dataset.card!==undefined){ var ci=+t.dataset.card; S.card = (S.card===ci?null:ci); render(); return; }
+    if(t.dataset.qf){ S.qfilter=t.dataset.qf; render(); return; }
+    if(t.id==="qpost"){
+      var ta=document.getElementById("qtext"), txt=ta?ta.value.trim():"";
+      S.qdest=(document.getElementById("qdest")||{}).value||"General";
+      S.qanon=!!(document.getElementById("qanon")||{}).checked;
+      if(!txt){ if(ta) ta.focus(); return; }
+      S.questions.unshift({q:txt,s:S.qdest,v:1,anon:S.qanon,who:"You",answers:[],id:++S.qseq});
+      S.qvoted[txt]=true;
+      S.qfilter="All"; S.qsort="new";
+      render(); return;
+    }
+    if(t.dataset.code){
+      var cc=t.dataset.code;
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(cc).catch(function(){}); }
+      t.classList.add("copied"); t.textContent="Copied";
+      setTimeout(function(){ t.classList.remove("copied"); t.textContent=cc; },1400);
+      return;
+    }
+    if(t.dataset.read){ S.read[t.dataset.read]=!S.read[t.dataset.read]; render(); return; }
+    if(t.dataset.tab){S.tab=t.dataset.tab;render();window.scrollTo({top:0,behavior:"instant"});return;}
+    if(t.dataset.go){S.tab=t.dataset.go;render();window.scrollTo({top:0,behavior:"instant"});return;}
+    if(t.dataset.day){S.day=+t.dataset.day;render();return;}
+    if(t.dataset.star){var k=t.dataset.star;S.starred[k]=!S.starred[k];render();return;}
+    if(t.dataset.check){
+      var ck=t.dataset.check, tgt=byKey(ck);
+      if(tgt){ SESSIONS.forEach(function(o){ if(o.d===tgt.d && o.t===tgt.t) delete S.checked[key(o)]; }); }
+      S.checked[ck]=true;
+      if(!S.roster.some(function(r){return r[0]==="You";})) S.roster.unshift(["You","Purple Shark Designs","1:11"]);
+      render();return;
+    }
+    if(t.dataset.vote){
+      var n=t.dataset.vote;
+      if(S.voted===n){ S.entries.forEach(function(e){if(e.n===n)e.v--;}); S.voted=null; }
+      else{
+        if(S.voted) S.entries.forEach(function(e){if(e.n===S.voted)e.v--;});
+        S.entries.forEach(function(e){if(e.n===n)e.v++;});
+        S.voted=n;
+      }
+      render();return;
+    }
+    if(t.dataset.q){
+      var q=t.dataset.q;
+      S.questions.forEach(function(x){ if(x.q===q){ x.v += S.qvoted[q]?-1:1; } });
+      S.qvoted[q]=!S.qvoted[q];
+      render();return;
+    }
+    if(t.id==="join"){S.joined=true;render();return;}
+  });
+
+  render();
+  drawQR();
+})();
+</script>
+
+</body>
+</html>
